@@ -1,0 +1,175 @@
+{
+    
+
+    "welcome message":"ውብ የሆነውን የኢትዮጵያን ታዋቂ ቦታዎችን ሁሉ ያስሱ እና በአቅራቢያ ያሉ ሆቴሎችን እና ምግብ ቤቶችን በቀላል መንገድ ያግኙ። የአሁናዊ አቅጣጫዎችን፣ የሚገመተውን ወጪ፣ የጉዞ ብሎጎችን እና ሌሎችንም ያግኙ።",
+    "welcome to":"እንኳን ደህና መጡ",
+    
+    "intro-title1":"የትም ብትሆን",
+    "intro-title2":"በአቅራቢያ ያሉ ነገሮችን ያስሱ",
+    "intro-title3":"የእውነተኛ  የጉዞ መመሪያ",
+    "intro-description1":"ከመድረሻዎ በፊት እና በጉዞዎ ወቅት ስለ መድረሻዎ ጠቃሚ መረጃ ማግኘት…",
+    "intro-description2":"ከሁሉም የቱሪስት ስፍራ አጠገብ ያሉ ሆቴሎችን እና ምግብ ቤቶችን በቀላል መንገድ ያስሱ...",
+    "intro-description3":"አቅጣጫዎችን፣ ወጪዎችን እና ሌሎች ከጉዞ ጋር የተያያዙ ነገሮችን በአንድ ቦታ ያግኙ...",
+    "get started":"እንጀምር",
+    
+    "explore country":"ኢትዮጵያን አስስ",
+    "search places":"ቦታዎችን ፈልግ",
+    "popular places":"ታዋቂ ቦታዎች",
+    "popular tours" : "ታዋቂ ጉዞዎች",   
+    "recently added":"በቅርቡ የተጨመሩ ቦታዎች ",
+    "recommended places":"የሚመከሩ ቦታዎች",
+    
+    "people like this":"ሰዎች ይህን ይወዳሉ",
+    "todo":"ለመስራት",
+    "you may also like":"እርስዎም ሊወዱት ይችላሉ",
+    "travel guide":"የጉዞ መመሪያ",
+    "nearby hotels":"በአቅራቢያ ያሉ ሆቴሎች",
+    "nearby restaurants":"በአቅራቢያ ያሉ ምግብ ቤቶች",
+    "steps":"አውቶብስ ማቆሚያ",
+    "estimated cost = ":"መነሻ =",
+    "distance = ":"መድረሻ =",
+    "no hotels found":"ምንም ሆቴሎች አልተገኙም።",
+    "no restaurants found":"ምንም ምግብ ቤቶች አልተገኙም።",
+    "we didn't find any nearby hotels in this area":"በዚህ አካባቢ ምንም አይነት በአቅራቢያ ያሉ ሆቴሎችን አላገኘንም።",
+    "we didn't find any nearby restaurants in this area":"በዚህ አካባቢ ምንም በአቅራቢያ ያሉ ምግብ ቤቶች አላገኘንም።",
+    "user reviews":"የተጠቃሚ ግምገማዎች",
+    "internal navigation" : "የውስጥ ካርታ",
+    "weather forcast" : "የአየር ሁኔታ ትንበያ",
+    
+    
+    "write a review":"አንድ ግምገማ ጻፍ",
+    "no internet":"ምንም የበይነመረብ ግንኙነት የለም!",
+    "no comments found":"ምንም አስተያየቶች አልተገኙም።",
+    "be the first to comment":"አስተያየት ለመስጠት የመጀመሪያው ይሁኑ",
+    "":"",
+    "recently added places":"በቅርብ ጊዜ የተጨመሩ ቦታዎች",
+    
+    
+    "search & explore":"ቦታዎችን ይፈልጉ እና ያስሱ",
+    "recent searchs":"የቅርብ ጊዜ ፍለጋ(ዎች)",
+    "search for places":"ቦታዎችን ፈልግ",
+    "search-description":"እስካሁን ምንም አይነት ነገር አልፈለክም። \n አሁን ሞክር - እንረዳሃለን!",
+    "we have found":"አግኝተናል",
+    "no places found":"ምንም ቦታዎች አልተገኙም።",
+    "try again":"እንደገና ሞክር!",
+    
+    
+    
+    "states":"ግዛቶች",
+    "blogs":"ብሎጎች",
+    
+    
+    "bookmarks":"የተቀመጡ",
+    "saved places":"የተቀመጡ ቦታዎች",
+    "saved experiences" :"Saved Experience",    
+    "saved blogs":"የተቀመጡ ብሎጎች",
+    "sign in first":"መጀመሪያ ይግቡ",
+    "sign in to save your favourite places here":"የሚወዷቸውን ቦታዎች እዚህ ለማስቀመጥ ይግቡ",
+    "sign in to save your favourite blogs here":"የሚወዷቸውን ብሎጎች እዚህ ለማስቀመጥ ይግቡ",
+    "no blogs found":"ምንም ብሎጎች አልተገኙም።",
+    "save your favourite places here":"ተወዳጅ ቦታዎችዎን እዚህ ያስቀምጡ",
+    "save your favourite blogs here":"ተወዳጅ ብሎጎችዎን እዚህ ያስቀምጡ",
+    
+    
+    
+    "skip":"ዝለል",
+    "check your internet connection!":"የበይነመረብ ግንኙነትዎን ያረጋግጡ!",
+    "something is wrong. please try again.":"የሆነ ችግር አለ። እባክዎ ዳግም ይሞክሩ.",
+    
+    
+    "sign in":"ይመዝገቡ",
+    "cancel":"ሰርዝ",
+    
+    "no sign in title":"ይህን ባህሪ ለመድረስ መጀመሪያ ይመዝገቡ",
+    "no sign in subtitle":"እስካሁን አልገቡም። ይህንን ባህሪ ለመክፈት እባክዎ ይግቡ",
+    
+    
+    
+    "comments":"አስተያየቶች",
+    "write a comment":"አስተያየት ይጻፉ",
+    
+    
+    
+    "no content":"ምንም ይዘት አልተገኘም።",
+    "delete?":"ይሰረዝ?",
+    "delete from database?":"ይህን ንጥል መሰረዝ ይፈልጋሉ?",
+    
+    
+    "notifications":"ማሳወቂያዎች",
+    "notification details":"የማሳወቂያ ዝርዝሮች",
+    
+    "hotels":"ሆቴሎች",
+    "tour and travel agency":"አስጎብኚ እና የጉዞ ኤጀንሲ",
+    "attraction places":"የመስህብ ቦታዎች",
+    "festival":"ፌስቲቫል",
+    "national profile" :"ብሔራዊ መገለጫ",
+    "emergency contact":"የአደጋ ጊዜ ግንኙነት",
+    "profile":"መገለጫ",
+    "general setting":"አጠቃላይ ቅንብር",
+    "login":"ግባ",
+    "get notifications":"ማሳወቂያዎችን ያግኙ",
+    "contact us":"አግኙን",
+    "rate this app":"ለዚህ መተግበሪያ ደረጃ ይስጡት።",
+    "licence":"ፈቃድ",
+    "privacy policy":"የ ግል የሆነ",
+    "about us":"ስለ እኛ",
+    "logout":"ውጣ",
+    "edit profile":"መገለጫ አርትዕ",
+    "update profile":"መገለጫ አዘምን",
+    "updated successfully":"በተሳካ ሁኔታ ተዘምኗል",
+    "enter new name":"አዲስ ስም አስገባ",
+     
+    "logout title":"በእርግጥ ከመተግበሪያው መውጣት ይፈልጋሉ?",
+    "yes":"አዎ",
+    "no":"አይ",
+
+    "rate"	:	"ደረጃ ",
+    "travel essentials"	:	 "የጉዞ አስፈላጊ ነገሮች",
+    "preference"	:	"ምርጫ",
+    "legal" 	:	 "ህጋዊ",
+
+
+
+    
+    "language":"ቋንቋ",
+    "select language":"ቋንቋ ይምረጡ",
+    "reward center"	:	 "የሽልማት ማዕከል",
+    "my rewards"	:	 "የእኔ ሽልማቶች",
+    "discover trip moments"	:	 "የጉዞ አፍታዎችን አግኝ",
+    "reward-msg1"	:	 "ተግባራትን አጠናቅቅ እና ሽልማቶችን አግኝ",
+    "reward-msg2"	:	 "የአክሱም ደረጃን ተመዝገብ እና ነፃ ተቀበል \nሽልማት",
+    "reward-msg3"	:	 "የጉዞ ልምድህን ለጥፍ እና \n100 ነጥብ ተቀበል",
+    "reward-msg4"	:	 "እንደ የጉዞ ልምድ እና \n80 ነጥብ ተቀበል",
+    "reward-msg5"	:	 "የጉዞ ልምዶችን አጋራ እና \n120 ነጥቦችን ተቀበል",
+    "reward-msg6"	:	 "በጉዞ ልምዶች ላይ አስተያየት ይስጡ \nእና 90 ነጥቦችን ተቀበል",
+    "reward-msg7"	:	 "የመጀመሪያውን የጉዞ ፖስተር ተከተሉ \nእና 110 ነጥቦችን ተቀበሉ",
+    "reward-msg8"	:	"የሦስት የጉዞ አፍታዎችን አጋራ",
+    "reward-msg9"	:	"እንደ አምስት የጉዞ ጊዜዎች",
+    "reward-msg10"	:	"በሶስት የጉዞ ጊዜ ላይ \nአስተያየት ይስጡ",
+    "reward-msg11"	:	"የሦስት የጉዞ ፖስተሮችን ተከተል",
+    "reward-msg12"	:	"ከሶስት የጉዞ ጊዜ በኋላ",
+    "press back again to exit"	:	"ለመውጣት እንደገና ተመለስ",
+    "added successfully"	:	"በስኬት ታክሏል",
+    "post to"	:	"ለጥፍ",
+    "post"	:	"መለጠፍ",
+    "asset not empty"	:	"ንብረት ባዶ አይደለም",
+    "upload"	:	"ጫን",
+    "upload complete"	:	"መጫኑ ተጠናቅቋል",
+    "upload-msg1"	:	"እስከ 10 ፎቶዎችን ወይም ከ1 ደቂቃ የማይበልጥ ቪዲዮ ማከል ትችላለህ",
+    "no image is selected!"	:	"ምንም ምስል አልተመረጠም!",
+    "photos/videos"	:	"ፎቶዎች/ቪዲዮዎች",
+    "location"	:	"ቦታ",
+    "description can't be empty"	:	"መግለጫ ባዶ ሊሆን አይችልም",
+    "write your experience..."	:	"ልምድህን ጻፍ...",
+    "all photos"	:	"ሁሉም ፎቶዎች",
+    "go"	:	"ሂድ",
+    "daily reward mode"	:	 "ዕለታዊ የሽልማት ሁኔታ",
+    "progress"	:	 "እድገት",
+    "new user rewards"	:	 "የአዲስ ተጠቃሚ ሽልማቶች",
+    "daily task rewards"	:	 "የዕለታዊ ተግባር ሽልማቶች"
+       
+
+    
+        
+
+}
