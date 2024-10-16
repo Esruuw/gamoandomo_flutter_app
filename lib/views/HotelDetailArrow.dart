@@ -13,6 +13,13 @@ import 'package:omogamo/model/service_model.dart';
 
 // import 'package:omogamo/model/imagedb.dart';
 import 'package:omogamo/model/popular_tours_model.dart';
+// import 'package:omogamo/views/AllDestinations.dart';
+// import 'package:omogamo/views/CulturalButton.dart';
+// import 'package:omogamo/views/GamoDestinations.dart';
+// import 'package:omogamo/views/ManMadeButton.dart';
+// import 'package:omogamo/views/NaturalButton.dart';
+// import 'package:omogamo/views/OmoDestinations.dart';
+// import 'package:omogamo/views/ddetails.dart';
 // import 'package:omogamo/views/details.dart';
 // import 'package:omogamo/utils/colors.dart';
 import 'package:omogamo/views/menu.dart';
@@ -90,123 +97,116 @@ late SearchBar searchBar;
   // List<Imagedb> myimage = [];
   bool loading = true;
 
-  Future getData() async {
-    http.Response response = await http.get("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json" as Uri);
-     if (response.statusCode == 200) {
+  Future<void> getData() async {
+  try {
+    final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+
+    if (response.statusCode == 200) {
       String data = response.body;
       print("Got the response from destination");
-      print(data);
       var decodedData = jsonDecode(data);
       print("The below is decoded Destination Data");
-      print(decodedData);
+
       if (decodedData['features'].isEmpty) {
         print("Empty");
       } else {
         for (var i = 0; i < decodedData['features'].length; i++) {
-          // var x= decodedData['features'][i]['geometry']['coordinates']['0,1'];
-          
-          Service serv = Service(
-            decodedData['features'][i]['properties']['full_name'],
-            decodedData['features'][i]['properties']['short_name'],
-            decodedData['features'][i]['properties']['zone'],
-            decodedData['features'][i]['properties']['wereda'],
-            decodedData['features'][i]['properties']['kebele'],
-            decodedData['features'][i]['properties']['locality_n'],
-            decodedData['features'][i]['properties']['phone_line'],
-            decodedData['features'][i]['properties']['email'],
-            decodedData['features'][i]['properties']['Service'],
-            decodedData['features'][i]['properties']['service_ty'],
-            decodedData['features'][i]['properties']['code'],
-            decodedData['features'][i]['properties']['img'],
-            decodedData['features'][i]['properties']['website'],
-            decodedData['features'][i]['geometry']['coordinates'][0],
-            decodedData['features'][i]['geometry']['coordinates'][1],
-            
-            // decodedData['features'][i]['geometry']['coordinates'],
+          var feature = decodedData['features'][i];
+          var properties = feature['properties'];
+          var geometry = feature['geometry'];
 
+          Service serv = Service(
+            properties['full_name'] ?? '',
+            properties['short_name'] ?? '',
+            properties['zone'] ?? '',
+            properties['wereda'] ?? '',
+            properties['kebele'] ?? '',
+            properties['locality_n'] ?? '',
+            properties['phone_line'] ?? '',
+            properties['email'] ?? '',
+            properties['Service'] ?? '',
+            properties['service_ty'] ?? '',
+            properties['code'] ?? '',
+            properties['img'] ?? '',
+            properties['website'] ?? '',
+            geometry['coordinates'][0] ?? 0.0,
+            geometry['coordinates'][1] ?? 0.0,
           );
           services.add(serv);
-        
-        //print(destination[i].destinatio);
         }
         print("not empty");
       }
     } else {
-      print("OOPs we didnt");
+      print("Oops, we didn't get a successful response");
     }
+  } catch (e) {
+    print("An error occurred: $e");
   }
+}
   // List<Destination> destination = [];
 
-  Future getdestinationData() async {
-    http.Response response = await http.get("https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json" as Uri);
+Future<void> getdestinationData() async {
+  const url = "https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json";
+  try {
+    final response = await http.get(Uri.parse(url));
+
     if (response.statusCode == 200) {
-      String data = response.body;
-      print("Got the response from destination");
-      print(data);
-      var decodedDatatwo = jsonDecode(data);
-      print("The below is decoded Destination Data");
-      print(decodedDatatwo);
+      final data = response.body;
+      final List<dynamic> decodedDatatwo = jsonDecode(data);
+
       if (decodedDatatwo.isEmpty) {
-        print("Empty");
+        print("Data is empty");
       } else {
         for (var i = 0; i < decodedDatatwo.length; i++) {
-    // for (var i = 0; i < decodedData['features'].length; i++) {
-        
-          Destination destiny = Destination(
-            decodedDatatwo[i]['full_name'],
-            decodedDatatwo[i]['short_name'],
-            decodedDatatwo[i]['zone'],
-            decodedDatatwo[i]['wereda'],
-            decodedDatatwo[i]['kebele'],
-            decodedDatatwo[i]['organizati'],
-            decodedDatatwo[i]['status'],
-            decodedDatatwo[i]['area_sqkm'],
-            //decodedDatatwo['features'][i]['properties']['Estimated'],
-            decodedDatatwo[i]['unesco_reg'],
-            decodedDatatwo[i]['descriptio'],
-            decodedDatatwo[i]['destinatio'],
-            decodedDatatwo[i]['x'],
-            decodedDatatwo[i]['y'],
-            decodedDatatwo[i]['image1'],
-                );
-        destination.add(destiny);
-        print("trying fullname and coordinate print");
-        print("d fullname print" + destination[i].dfullname);
-        print(destination[i].dcoordinates);
-        print(destination[i].dcoordinatesy);
+          final item = decodedDatatwo[i];
 
+          // Handling null values by providing default values
+          final destinationItem = Destination(
+            item['full_name'] ?? '',
+            item['short_name'] ?? '',
+            item['zone'] ?? '',
+            item['wereda'] ?? '',
+            item['kebele'] ?? '',
+            item['organizati'] ?? '',
+            item['status'] ?? '',
+            item['area_sqkm'] ?? '',
+            item['unesco_reg'] ?? '',
+            item['descriptio'] ?? '',
+            item['destinatio'] ?? '',
+            item['x']?.toDouble() ?? 0.0, // Ensure it's a double
+            item['y']?.toDouble() ?? 0.0, // Ensure it's a double
+            item['image1'] ?? '',
+          );
+
+          destination.add(destinationItem);
         }
-        print("not empty");
+        print("Data loaded successfully");
       }
     } else {
-      print("OOPs we didnt");
+      print("Failed to load data: ${response.statusCode}");
     }
+  } catch (e) {
+    print("An error occurred: $e");
   }
-
+}
 
   @override
   void initState() {
     super.initState();
-
         destination = destination;
         print(destination.length);
- 
+    
     getData();
     getdestinationData();
     country = getCountrys();
     popularTourModels = getPopularTours();
     loading = true;
-
     print("Init state");
     print(loading);
     hotReload();
-    
-    
-  }
-  
-
+    }
   Future hotReload() async {
-    Future.delayed(Duration(seconds: 6)).then((value) {
+    Future.delayed(const Duration(seconds: 6)).then((value) {
       setState(() {
         print("Delayed print value");
         loading = false;
@@ -238,13 +238,15 @@ late SearchBar searchBar;
   Widget build(BuildContext context) {
     var inkWell = InkWell(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: const Icon(
               Icons.more_vert,
              color: Color(0xff000000),
             ),
           ),
-    
+          // onTap: () {
+          //           nextScreen(context, MenuPage());
+          //         },
           
                      onTap: () {
   Navigator.push(
@@ -255,13 +257,15 @@ late SearchBar searchBar;
   );
 },
           
+          // onTap: () => Home(),
           );
-
+      
+     
     return Scaffold(
       appBar: AppBar(
         leading: Container(
-          color: Color(0xffC4CEDD),
-          padding: EdgeInsets.all(1),
+          color: const Color(0xffC4CEDD),
+          padding: const EdgeInsets.all(1),
           child: Image.asset(
              "assets/images/logomenu.png",
             height: 40,
@@ -273,17 +277,13 @@ late SearchBar searchBar;
         title: Row(
           
           mainAxisAlignment: MainAxisAlignment.center,
-          
-
           children: [
             Image.asset(
               "assets/images/logo.png",
               height: 25,
             ),
-            
-    
+       
           ],
-
         ),
 
         
@@ -296,15 +296,15 @@ late SearchBar searchBar;
       ),
            
       body:SingleChildScrollView(
-        
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
                   child: Container(
-                  
+              
+                    
       child: TextField(
         autofocus: false,
         onChanged: (searchText) {
@@ -319,16 +319,14 @@ late SearchBar searchBar;
           });
         },
         // controller: _textController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           prefixIcon: Icon(Icons.search),
           hintText: 'Search Places',
         ),
       ),
-      
-
-                  ),
-                         onTap: () {
+      ),
+                      onTap: () {
   Navigator.push(
     context,
     MaterialPageRoute(
@@ -337,42 +335,53 @@ late SearchBar searchBar;
   );
 },
                 ),
-                SizedBox(
+                const SizedBox(
                 height: 18,
               ),
-Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                 
-                  
-                  
-                                  
-       ],
-                                                   
-       ),
-                                                                
-     SizedBox(
-    height: 4,
-      ),
-      Text(
-     "Hotel and Restaurantss",
-    style: TextStyle(
-    fontSize: 20,
-    color: Colors.black54,
-     fontWeight: FontWeight.w600),
-                                                       
-      ),
-
-                                                 SizedBox(
-                                                   height: 8,
-                                                 ),
-Divider(
+              const Divider(
 color: Colors.blue, 
 ),
-                                   
-                                                 
-                                                 loading == true ? Center(child: CircularProgressIndicator()) :
-                                                SingleChildScrollView(
+                  const Row(
+
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+         
+   
+ Row(
+  mainAxisAlignment: MainAxisAlignment.start,
+  children: [
+    SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        
+        children: [
+          
+        ],
+      ),
+    ),
+  ],
+) 
+   ],
+   ),
+                                                                                   
+
+                       
+                       const Row(children: [
+
+                        
+                          Text(
+                                 "Hotel and Restaurant",
+                                 style: TextStyle(
+                                 fontSize: 20,
+                                 color: Colors.black54,
+                                 fontWeight: FontWeight.w600),
+                               ),
+               
+                     ],),
+                         
+    loading == true ? Center(child: CircularProgressIndicator()) :
+     SingleChildScrollView(
                                                     child:Container(
                                                   // height: 1000,
                                                    width: double.infinity,
@@ -385,20 +394,45 @@ color: Colors.blue,
                                                          return  listOfServices(index);
                                                        }),
                                                  ),
-                                                )
-                                                ],
-                                               
-       ),
-                                             
-       ),
-                                           
-     ),  
-    );
-                                       
-  }
-  }
-                    
-  class CountryListTile extends StatelessWidget {
+                                                ),
+
+                   
+                            const SizedBox(
+                             height: 28,
+                              ),
+                                         
+                   const Row(children: [
+              
+                    ],),         
+                           
+           
+                    SizedBox(height: 15),
+           
+                     const SizedBox(height: 15),
+             
+                     SizedBox(height: 15),
+                     const Row(children: [
+                 
+                    ],),
+          
+                     SizedBox(height: 15),
+                   
+                   
+                           const SizedBox(height: 20),
+                   
+                   
+                              ],
+                             )
+                                                                  
+                              ),
+                                 ),
+                                                              
+                            );  
+                                                       
+                                                        }
+                                                      }
+  
+class CountryListTile extends StatelessWidget {
   final String fullname;
   final double xcoordinates;
   final double ycoordinates;
@@ -410,7 +444,7 @@ color: Colors.blue,
   final int code;
   final String wereda;
   final String website;
-
+ 
   CountryListTile({
       required this.fullname,
       required this.xcoordinates,
@@ -425,40 +459,37 @@ color: Colors.blue,
       required this.website,
 
       });
-
-
-
 @override
   Widget build(BuildContext context) {
     return GestureDetector(
       //ontap hotel and restaurant
-      onTap: () {
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Detailsservice(
-                      imgUrl: img,
-                      placeName: fullname.length > 15 ? fullname.substring(0, 15) + '...' : fullname,
-                      rating: 4.5,
-                     fullname: fullname,
-                     zone: zone,
-                     code: code,
-                     phoneLine: phoneLine,
-                     phoneNobile:phoneNobile,
-                     website: website,
-                     xcoordinates: xcoordinates,
-                     ycoordinates: ycoordinates,
-                     wereda:wereda, img: '',
-
-                      
-                    )));
-      },
-    
+onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => Detailsservice(
+        imgUrl: img,
+        placeName: fullname.length > 15 ? fullname.substring(0, 15) + '...' : fullname,
+        rating: 4.5,
+        fullname: fullname,
+        zone: zone,
+        code: code,
+        phoneLine: phoneLine,
+        phoneNobile: phoneNobile,
+        website: website,
+        xcoordinates: xcoordinates, // Ensure this is passed correctly
+        ycoordinates: ycoordinates, // Ensure this is passed correctly
+        wereda: wereda,
+        img: img,
+      ),
+    ),
+  );
+},
+  
       child:Container(
 
-        margin: EdgeInsets.only(left: 0,top: 10),
-        decoration: BoxDecoration(
+        margin: const EdgeInsets.only(left: 0,top: 10),
+        decoration: const BoxDecoration(
             color: Colors.black, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10),topLeft:Radius.circular(5), topRight:Radius.circular(5), )),
 
         child: Column(
@@ -475,33 +506,33 @@ color: Colors.blue,
               ),
                ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
                  // maqaa isa duree
                   
-                  SizedBox(
+                  const SizedBox(
                     height: 3,
                   ),
                                     Text(
                     fullname.length > 15 ? fullname.substring(0, 15) + '...' : fullname,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
 
                  
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
  
                   Text(
                     //dunescoreg + "sdafl",
                     "Zone: " + zone,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w300,
                         color: Colors.white),
@@ -513,15 +544,15 @@ color: Colors.blue,
           ],
         ),
       ),
+     
     );
-
   }
 
 }
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 8),
+      margin: const EdgeInsets.only(right: 8),
       child: Stack(
         children: [
           ClipRRect(
@@ -541,9 +572,9 @@ color: Colors.blue,
                 Row(
                   children: [
                     Container(
-                        margin: EdgeInsets.only(left: 8, top: 8),
+                        margin: const EdgeInsets.only(left: 8, top: 8),
                         padding:
-                            EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                            const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Colors.white38),
@@ -553,11 +584,11 @@ color: Colors.blue,
                          ) ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Row(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 10, left: 8, right: 8),
+                      margin: const EdgeInsets.only(bottom: 10, left: 8, right: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -583,11 +614,11 @@ color: Colors.blue,
                         ],
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Container(
-                        margin: EdgeInsets.only(bottom: 10, right: 8),
+                        margin: const EdgeInsets.only(bottom: 10, right: 8),
                         padding:
-                            EdgeInsets.symmetric(horizontal: 3, vertical: 7),
+                            const EdgeInsets.symmetric(horizontal: 3, vertical: 7),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(3),
                             color: Colors.white38),

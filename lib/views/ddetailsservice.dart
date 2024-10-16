@@ -13,7 +13,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 // import 'dart:math';
 
 class Detailsservice extends StatefulWidget {
-  final String imgUrl;
+ final String imgUrl;
   final String placeName;
   final double rating;
   final String fullname;
@@ -23,12 +23,28 @@ class Detailsservice extends StatefulWidget {
   final String phoneNobile;
   final String website;
   final String img;
-  
-
+  final double xcoordinates;
+  final double ycoordinates;
+  final String wereda;
  
 
   Detailsservice(
-      {required this.phoneNobile,required this.rating, required this.website, required this.imgUrl, required this.placeName, required this.fullname, required this.zone, required this.code, required this.phoneLine, required this.img});
+      {
+       required this.wereda,
+    required this.phoneNobile,
+    required this.rating,
+    required this.website,
+    required this.imgUrl,
+    required this.placeName,
+    required this.fullname,
+    required this.zone,
+    required this.code,
+    required this.phoneLine,
+    required this.img,
+    required this.xcoordinates,
+    required this.ycoordinates,
+
+       });
 handleShare() {
     Share.share(
         'Check out ${"Dave"},App. https://play.google.com/store/apps/details?id=com.essti.visitethiopia ${"Thank you"} ');
@@ -95,7 +111,7 @@ class _Detailsservice extends State<Detailsservice> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             left: 24,
                             right: 24,
                           ),
@@ -106,7 +122,7 @@ class _Detailsservice extends State<Detailsservice> {
                                   Navigator.pop(context);
                                 },
                                 child: Container(
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.arrow_back,
                                     // color: Color(0xFF5D7FE4),
                                     size: 24,
@@ -128,7 +144,7 @@ class _Detailsservice extends State<Detailsservice> {
                         )
                         ),
                               
-                              SizedBox(
+                              const SizedBox(
                                 width: 24,
                               ),
                               // Image.asset(
@@ -141,7 +157,7 @@ class _Detailsservice extends State<Detailsservice> {
                         ),
                         Spacer(),
                         Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             left: 24,
                             right: 24,
                           ),
@@ -150,15 +166,15 @@ class _Detailsservice extends State<Detailsservice> {
                             children: [
                               Text(
                                 widget.fullname,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     // color: Colors.white,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 23),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 12,
                               ),
-                              Row(
+                              const Row(
                                 children: [
                                   Icon(
                                     Icons.location_on,
@@ -177,17 +193,17 @@ class _Detailsservice extends State<Detailsservice> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   RatingBar(widget.rating.round()),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Estimated: 13712",
                                     style: TextStyle(
                                         // color: Colors.white70,
@@ -220,26 +236,26 @@ class _Detailsservice extends State<Detailsservice> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FeaturesTile(
-                    icon: Icon(Icons.phone, color: Color(0xff5A6C64)),
+                    icon: const Icon(Icons.phone, color: Color(0xff5A6C64)),
                     label: widget.phoneLine.toString(),
                     latitude: lat,
                     longitude: lon
                   ),
                   Link(
-                    icon: Icon(Icons.details, color: Color(0xff5A6C64)),
+                    icon: const Icon(Icons.details, color: Color(0xff5A6C64)),
                     label: widget.website.toString(),
                     latitude: lat,
                     longitude: lon
                   ),
                   Sharetofrd(
-                    icon: Icon(Icons.share, color: Color(0xff5A6C64)),
+                    icon: const Icon(Icons.share, color: Color(0xff5A6C64)),
                     label: "Share to friends",
                     latitude: lat,
                     longitude: lon
                   ),
 
                   FeaturesTile(
-                    icon: Icon(Icons.recommend, color: Color(0xff5A6C64)),
+                    icon: const Icon(Icons.recommend, color: Color(0xff5A6C64)),
                     label: "Travel Package",
                     latitude: lat,
                     longitude: lon
@@ -247,7 +263,7 @@ class _Detailsservice extends State<Detailsservice> {
                 ],
               ),
           Container(
-  margin: EdgeInsets.symmetric(vertical: 24),
+  margin: const EdgeInsets.symmetric(vertical: 24),
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
@@ -265,12 +281,12 @@ class _Detailsservice extends State<Detailsservice> {
   ),
 ),
 
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Text(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: const Text(
                   "Haile-Arba Minch is a 107 room four-star resort located at a grand view overlooking the twin lakes of Abaya and Chamo along the beautiful evergreen vegetation and chain of mountains that form the most beautiful pattern. Haile- Arba Minch is an all inclusive concept that provides five star services to its guests. Our new resort features food and beverage outlets on view points; complete health club",
                   textAlign: TextAlign.start,
                   style: TextStyle(
@@ -280,7 +296,7 @@ class _Detailsservice extends State<Detailsservice> {
                       color: Color(0xff879D95)),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               // Container(
@@ -315,10 +331,10 @@ class DetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-          color: Color(0xffE9F4F9), borderRadius: BorderRadius.circular(16)),
-      child: Column(
+          color: const Color(0xffE9F4F9), borderRadius: BorderRadius.circular(16)),
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Row(
@@ -408,7 +424,7 @@ class FeaturesTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(40)),
                 child: icon,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 9,
               ),
               Container(
@@ -416,7 +432,7 @@ class FeaturesTile extends StatelessWidget {
                   child: Text(
                     label,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff5A6C64)),
@@ -461,13 +477,13 @@ onTap: () async {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff5A6C64).withOpacity(0.5)),
+                    border: Border.all(color: const Color(0xff5A6C64).withOpacity(0.5)),
                     borderRadius: BorderRadius.circular(40)),
                 child: icon,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 9,
               ),
               Container(
@@ -475,7 +491,7 @@ onTap: () async {
                   child: Text(
                     label,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff5A6C64)),
@@ -523,13 +539,13 @@ class Link extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff5A6C64).withOpacity(0.5)),
+                    border: Border.all(color: const Color(0xff5A6C64).withOpacity(0.5)),
                     borderRadius: BorderRadius.circular(40)),
                 child: icon,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 9,
               ),
               Container(
@@ -537,7 +553,7 @@ class Link extends StatelessWidget {
                   child: Text(
                     label,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff5A6C64)),
@@ -566,7 +582,7 @@ class RatingBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Row(
+        child: const Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Icon(

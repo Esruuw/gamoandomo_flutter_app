@@ -8,7 +8,7 @@ class GridAttractions extends StatelessWidget {
   final List<Attraction> attractions;
   final ThemeData themeData;
 
-  GridAttractions({required this.attractions, required this.themeData});
+  const GridAttractions({required this.attractions, required this.themeData});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class GridAttractions extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             attractions[index].name,
-                            style: themeData.textTheme.bodyText1,
+                            style: themeData.textTheme.bodyLarge,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Row(
@@ -84,7 +84,7 @@ class GridAttractions extends StatelessWidget {
                               ),
                               Text(
                                 attractions[index].district,
-                                style: themeData.textTheme.bodyText1,
+                                style: themeData.textTheme.bodyLarge,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],

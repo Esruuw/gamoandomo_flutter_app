@@ -1481,3 +1481,1476 @@ color: Colors.blue,
  
 
 
+
+
+
+
+
+
+detailsservice
+
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:omogamo/data/data.dart';
+import 'package:omogamo/model/country_model.dart';
+import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+// import 'package:discounttour/';
+import 'package:url_launcher/url_launcher.dart';
+// import 'package:vector_math/vector_math.dart';
+// import 'package:latlong2/latlong.dart';
+
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+// import 'package:flutter_share/flutter_share.dart';
+// import 'mapScreen.dart';
+// import 'dart:math';
+
+class Detailsservice extends StatefulWidget {
+  final String imgUrl;
+  final String placeName;
+  final double rating;
+  final String fullname;
+  final String zone;
+  final int code;
+  final String phoneLine;
+  final String phoneNobile;
+  final String website;
+  final String img;
+  final double xcoordinates;
+  final double ycoordinates;
+  final String wereda;
+
+ 
+
+  Detailsservice(
+      {required this.wereda, required this.phoneNobile,required this.rating, required this.website, required this.imgUrl, required this.placeName, required this.fullname, required this.zone, required this.code, required this.phoneLine, required this.img, required this.xcoordinates, required this.ycoordinates});
+handleShare() {
+    Share.share(
+        'Check out ${"Dave"},App. https://play.google.com/store/apps/details?id=com.essti.visitethiopia ${"Thank you"} ');
+  }
+  @override
+  _Detailsservice createState() => _Detailsservice();
+}
+//_DetailsState
+
+class _Detailsservice extends State<Detailsservice> {
+List<CountryModel> country = [];
+  late double xy;
+  late double lat;
+  late double lon;
+  late double latDigree;
+  late double lonDigree;
+  
+  int r = 6371;
+
+  handleShare() {
+    Share.share(
+        'Check out ${"Dave"},App. https://play.google.com/store/apps/details?id=com.essti.visitethiopia ${"Thank you"} ');
+  }
+  @override
+  void initState() {
+    country = getCountrys();
+    super.initState();
+    print(widget.placeName);
+    
+    
+    // print(widget.dy);
+    // print(widget.dz);
+    
+    // lat = asin(widget.dz / r);
+    // lon = atan2(widget.dy, widget.dx);
+    // PI = 3.14159266;
+    // latDigree = lat * 180 / 3.14159266;
+    // // lonDigree = lon * 180 / 3.14159266;
+    // print(latDigree);
+    // print(latDigree);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Image.network(
+                    widget.imgUrl,
+                    height: 295,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    height: 350,
+                    // color: Colors.black12,
+                    padding: EdgeInsets.only(top: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(
+                            left: 16,
+                            right: 2,
+                          ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  child: const Icon(
+                                    Icons.arrow_back,
+                                    // color: Color(0xFF5D7FE4),
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                              ),
+                              Spacer(),
+                          CircleAvatar(
+                         // backgroundColor: Colors.blue.withOpacity(0.9),
+                         child: IconButton(
+                          padding: EdgeInsets.all(0),
+                          icon: const Icon(
+                            Icons.share,
+                            size: 22,
+                          ),
+                           onPressed: () {
+                            handleShare();
+                          },
+                         )
+                         ),
+                              
+                              const SizedBox(
+                                width: 24,
+                              ),
+                              // Image.asset(
+                              //   "assets/heart.png",
+                              //   height: 24,
+                              //   width: 24,
+                              // )
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            left: 14,
+                            right: 24,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.fullname,
+                                style: const TextStyle(
+                                    // color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16),
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Color(0xff1A4160),
+                                    size: 19,
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                   widget.wereda,
+                                    style: const TextStyle(
+                                        color: Color(0xff1A4160),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 1,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RatingBar(widget.rating.round()),
+                                  const SizedBox(
+                                    width: 8,
+                                    
+                                  ),
+                                  // Text(
+                                    
+                                  //   "Estimated: 13712",
+                                  //   style: TextStyle(
+                                  //       // color: Colors.white70,
+                                  //       fontWeight: FontWeight.w600,
+                                  //       fontSize: 17),
+                                  // )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: const BoxDecoration(
+                              // color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))),
+                          height: 1,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FeaturesTile(
+                    icon: Icon(Icons.phone, color: Color(0xff1A4160),),
+                    label: widget.phoneLine.toString(),
+                    latitude: lat,
+                    longitude: lon
+                  ),
+                  Link(
+                    icon: Icon(Icons.link_sharp, color: Color(0xff1A4160),),
+                    label: widget.website.toString(),
+                    latitude: lat,
+                    longitude: lon
+                  ),
+                  Sharetofrd(
+                    icon: Icon(Icons.merge_type_sharp, color: Color(0xff1A4160),),
+                    label: "Go to Map",
+                    latitude: widget.xcoordinates,
+                    longitude: widget.ycoordinates,
+                  ),
+                  // FeaturesTile(
+                  //   icon: Icon(Icons.recommend, color: Color(0xff5A6C64)),
+                  //   label: "Travel Package",
+                  //   latitude: lat,
+                  //   longitude: lon
+                  // )
+                ],
+              ),
+           Container(
+  margin: EdgeInsets.symmetric(vertical: 16),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      DetailsCard(
+        rating: widget.rating,       // or any double value like 4.5
+        title: widget.fullname,      // or any string value like "Hotel Name"
+        noOfReviews: "13712 reviews" // or any string value
+      ),
+    ],
+  ),
+),
+
+              SizedBox(
+                height: 1,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: const Text(
+                  "The hotel located at a grand view overlooking the twin lakes of Abaya and Chamo along the beautiful evergreen vegetation and chain of mountains that form the most beautiful pattern. Haile- Arba Minch is an all inclusive concept that provides five star services to its guests. Our new resort features food and beverage outlets on view points; complete health club",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: 15,
+                      height: 1.5,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff879D95)),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              // Container(
+              //   height: 240,
+              //   child: ListView.builder(
+              //       padding: EdgeInsets.symmetric(horizontal: 24),
+              //       itemCount: country.length,
+              //       shrinkWrap: true,
+              //       physics: ClampingScrollPhysics(),
+              //       scrollDirection: Axis.horizontal,
+              //       itemBuilder: (context, index) {
+              //         return ImageListTile(
+              //           imgUrl: country[index].imgUrl,
+              //         );
+              //       }
+              //       ),
+              // ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailsCard extends StatelessWidget {
+  final String title;
+  final String noOfReviews;
+  final double rating;
+  DetailsCard({required this.rating, required this.title, required this.noOfReviews});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 70, vertical: 8),
+      decoration: BoxDecoration(
+          color: Color(0xffE9F4F9),
+         borderRadius: BorderRadius.circular(1)),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Row(
+          //   children: [
+          //     Container(
+          //       padding: EdgeInsets.all(8),
+          //       decoration: BoxDecoration(
+          //           color: Color(0xffD5E6F2),
+          //           borderRadius: BorderRadius.circular(10)),
+          //       child: Image.asset(
+          //         "assets/card1.png",
+          //         height: 30,
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       width: 8,
+          //     ),
+          //     Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         Text(
+          //           "Booking",
+          //           textAlign: TextAlign.center,
+          //           style: TextStyle(
+          //               fontSize: 16,
+          //               fontWeight: FontWeight.w600,
+          //               color: Color(0xff5A6C64)),
+          //         ),
+          //         SizedBox(
+          //           height: 6,
+          //         ),
+          //         Text(
+          //           "8.0/10",
+          //           textAlign: TextAlign.center,
+          //           style: TextStyle(
+          //               fontSize: 14,
+          //               fontWeight: FontWeight.w600,
+          //               color: Color(0xff5A6C64)),
+          //         )
+          //       ],
+          //     )
+          //   ],
+          // ),
+          // SizedBox(
+            // height: 8,
+          // ),
+          Text(
+            "Details about the place",
+            // textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 14,
+                // fontWeight: FontWeight.w600,
+                color: Color(0xff000000)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FeaturesTile extends StatelessWidget {
+  final Icon icon;
+  final String label;
+  final double latitude;
+  final double longitude;
+  FeaturesTile({required this.label, required this.icon, required this.latitude, required this.longitude});
+ 
+                                        
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.7,
+      child: InkWell(
+        onTap: () async {
+        var phoneNo = label;
+          await FlutterPhoneDirectCaller
+              .callNumber(phoneNo);
+
+        },
+          child: Container(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xff5A6C64).withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(40)),
+                child: icon,
+              ),
+              const SizedBox(
+                height: 9,
+              ),
+              Container(
+                  width: 100,
+                  child: Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff5A6C64)),
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//share to friends
+class Sharetofrd extends StatelessWidget {
+  final Icon icon;
+  final String label;
+  final double latitude;
+  final double longitude;
+  Sharetofrd({required this.label, required this.icon, required this.latitude, required this.longitude});
+
+                           
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.7,
+      child: InkWell(
+        onTap: () async {
+          String url =
+          //  "google.navigation:q=${widget.place.latitude},${widget.place.longitude}";
+            "https://www.google.com/maps/search/?api=1&query=$longitude,$latitude";
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            print('cannot launch');
+          }
+        },
+
+        // onPressed: () {
+        //                     handleShare();
+        //                   },
+          child: Container(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xff5A6C64).withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(40)),
+                child: icon,
+              ),
+              const SizedBox(
+                height: 9,
+              ),
+              Container(
+                  width: 100,
+                  child: Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff5A6C64)),
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//link
+//share to friends
+class Link extends StatelessWidget {
+  final Icon icon;
+  final String label;
+  final double latitude;
+  final double longitude;
+  
+  Link({required this.label, required this.icon, required this.latitude, required this.longitude});
+
+
+                           
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.7,
+      child: InkWell(
+       onTap: () async {
+         var phoneNo = label;
+          String url = phoneNo;
+          //  "google.navigation:q=${widget.place.latitude},${widget.place.longitude}";
+           
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            print('cannot launch');
+          }
+        },
+        // onPressed: () {
+        //                     handleShare();
+        //                   },
+          child: Container(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xff5A6C64).withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(40)),
+                child: icon,
+              ),
+              const SizedBox(
+                height: 9,
+              ),
+              Container(
+                  width: 70,
+                  child: Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff5A6C64)),
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+//
+// class Link extends StatelessWidget {
+//   final Icon icon;
+//   final String label;
+//   final double latitude;
+//   final double longitude;
+  
+//   Link({this.label, this.icon, this.latitude, this.longitude});
+
+
+                           
+//   @override
+//   Widget build(BuildContext context) {
+//     return Opacity(
+//       opacity: 0.7,
+//       child: InkWell(
+//        onTap: () async {
+//          var phoneNo = label;
+//           String url = phoneNo;
+//           //  "google.navigation:q=${widget.place.latitude},${widget.place.longitude}";
+           
+//           if (await canLaunch(url)) {
+//             await launch(url);
+//           } else {
+//             print('cannot launch');
+//           }
+//         },
+//         // onPressed: () {
+//         //                     handleShare();
+//         //                   },
+//           child: Container(
+//           child: Column(
+//             children: [
+//               Container(
+//                 padding: EdgeInsets.all(8),
+//                 decoration: BoxDecoration(
+//                     border: Border.all(color: Color(0xff5A6C64).withOpacity(0.5)),
+//                     borderRadius: BorderRadius.circular(40)),
+//                 child: icon,
+//               ),
+//               SizedBox(
+//                 height: 9,
+//               ),
+//               Container(
+//                   width: 70,
+//                   child: Text(
+//                     label,
+//                     textAlign: TextAlign.center,
+//                     style: TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600,
+//                         color: Color(0xff5A6C64)),
+//                   ))
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+
+class RatingBar extends StatelessWidget {
+  final int rating;
+  RatingBar(this.rating);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: const Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+    
+        SizedBox(
+          width: 3,
+        ),
+   
+      ],
+    ));
+  }
+}
+
+class ImageListTile extends StatelessWidget {
+  final String imgUrl;
+  ImageListTile({required this.imgUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(right: 8),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: CachedNetworkImage(
+          imageUrl: imgUrl,
+          height: 220,
+          width: 150,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Natural code updated
+
+
+import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:omogamo/data/data.dart';
+import 'package:omogamo/model/country_model.dart';
+import 'package:omogamo/model/destination_model.dart';
+import 'package:omogamo/model/service_model.dart';
+import 'package:omogamo/model/popular_tours_model.dart';
+import 'package:omogamo/views/details.dart';
+import 'package:omogamo/views/menu.dart';
+
+class NaturalButton extends StatefulWidget {
+  @override
+  _NaturalButton createState() => _NaturalButton();
+}
+
+class _NaturalButton extends State<NaturalButton> {
+  bool isItemAvailable = true;
+  late SearchBar searchBar;
+
+  List<PopularTourModel> popularTourModels = [];
+  List<CountryModel> country = [];
+  List<Service> services = [];
+  List<Destination> destination = [];
+  List<Destination> originalDestination = [];
+
+  bool loading = true;
+
+  Future<void> getData() async {
+    try {
+      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+      if (response.statusCode == 200) {
+        String data = response.body;
+        var decodedData = jsonDecode(data);
+
+        if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
+          for (var feature in decodedData['features']) {
+            Service serv = Service(
+              feature['properties']['full_name'] ?? '',
+              feature['properties']['short_name'] ?? '',
+              feature['properties']['zone'] ?? '',
+              feature['properties']['wereda'] ?? '',
+              feature['properties']['kebele'] ?? '',
+              feature['properties']['locality_n'] ?? '',
+              feature['properties']['phone_line'] ?? '',
+              feature['properties']['email'] ?? '',
+              feature['properties']['Service'] ?? '',
+              feature['properties']['service_ty'] ?? '',
+              feature['properties']['code'] ?? '',
+              feature['properties']['img'] ?? '',
+              feature['properties']['website'] ?? '',
+              feature['geometry']['coordinates']?[0] ?? 0.0,
+              feature['geometry']['coordinates']?[1] ?? 0.0,
+            );
+            services.add(serv);
+          }
+        }
+      } else {
+        print("Failed to get a successful response");
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+    }
+  }
+
+  Future<void> getdestinationData() async {
+    try {
+      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json"));
+      if (response.statusCode == 200) {
+        String data = response.body;
+        var decodedDatatwo = jsonDecode(data);
+
+        if (decodedDatatwo != null && decodedDatatwo.isNotEmpty) {
+          for (var item in decodedDatatwo) {
+            Destination destiny = Destination(
+              item['full_name'] ?? '',
+              item['short_name'] ?? '',
+              item['zone'] ?? '',
+              item['wereda'] ?? '',
+              item['kebele'] ?? '',
+              item['organizati'] ?? '',
+              item['status'] ?? '',
+              item['area_sqkm'] ?? '',
+              item['unesco_reg'] ?? '',
+              item['descriptio'] ?? '',
+              item['destinatio'] ?? '',
+              item['x'] ?? 0.0,
+              item['y'] ?? 0.0,
+              item['image1'] ?? '',
+            );
+            destination.add(destiny);
+          }
+        }
+      } else {
+        print("Failed to get a successful response");
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+    getdestinationData().then((_) {
+      originalDestination.addAll(destination);
+      country = getCountrys();
+      popularTourModels = getPopularTours();
+      hotReload();
+    });
+  }
+
+  Future<void> hotReload() async {
+    Future.delayed(Duration(seconds: 6)).then((_) {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Filter the destination list to include only those from "Gamo"
+    List<Destination> filteredDestination = destination.where((d) => d.dzone == "Gamo").toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: Container(
+          color: Color(0xffC4CEDD),
+          padding: EdgeInsets.all(1),
+          child: Image.asset(
+            "assets/images/logomenu.png",
+            height: 40,
+            width: 40,
+          ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/logo.png",
+              height: 25,
+            ),
+          ],
+        ),
+        actions: [
+          InkWell(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: const Icon(
+                Icons.more_vert,
+                color: Color(0xff000000),
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MenuPage(key: UniqueKey()),
+                ),
+              );
+            },
+          ),
+        ],
+        elevation: 0.0,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                autofocus: false,
+                onChanged: (searchText) {
+                  searchText = searchText.toLowerCase();
+                  setState(() {
+                    if (searchText.isEmpty) {
+                      destination = List.from(originalDestination);
+                    } else {
+                      destination = originalDestination.where((u) {
+                        var fName = u.dfullname.toLowerCase();
+                        return fName.contains(searchText);
+                      }).toList();
+                    }
+                    isItemAvailable = destination.isNotEmpty;
+                  });
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Search Places',
+                ),
+              ),
+              const SizedBox(height: 18),
+              const Text(
+                "Natural Destinations",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Divider(color: Colors.blue),
+              loading
+                  ? Center(child: CircularProgressIndicator())
+                  : filteredDestination.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'Destination not available',
+                            style: TextStyle(fontSize: 18, color: Colors.red),
+                          ),
+                        )
+                      : GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 0,
+                          ),
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          itemCount: filteredDestination.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var currentDestination = filteredDestination[index];
+                            return PopularTours(
+                              dfullname: currentDestination.dfullname,
+                              ddestinatio: currentDestination.ddestinatio,
+                              dunescoreg: currentDestination.dunescoreg,
+                              dshortname: currentDestination.dshortname,
+                              dcoordinates: currentDestination.dcoordinates,
+                              dcoordinatesy: currentDestination.dcoordinatesy,
+                              destinationnnn: currentDestination.destinationnnn,
+                              dzone: currentDestination.dzone,
+                              imgdest: currentDestination.imgdest,
+                            );
+                          },
+                        ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PopularTours extends StatelessWidget {
+  final String dfullname;
+  final String dshortname;
+  final String ddestinatio;
+  final String dunescoreg;
+  final double dcoordinates;
+  final double dcoordinatesy;
+  final String destinationnnn;
+  final String dzone;
+  final String imgdest;
+
+  PopularTours({
+    required this.dfullname,
+    required this.dshortname,
+    required this.ddestinatio,
+    required this.dunescoreg,
+    required this.destinationnnn,
+    required this.dcoordinates,
+    required this.dcoordinatesy,
+    required this.dzone,
+    required this.imgdest,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Details(
+              imgUrl: imgdest,
+              placeName: dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
+              rating: 4.5,
+              dcoordinates: dcoordinates,
+              dcoordinatesy: dcoordinatesy,
+              ddestinatio: ddestinatio,
+              dfullname: dfullname,
+              imgdest: imgdest,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 0, top: 10),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 123, 125, 201),
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(40),
+            topLeft: Radius.circular(40),
+          ),
+        ),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: CachedNetworkImage(
+                imageUrl: imgdest,
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  Text(
+                    dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                  Text(
+                    ddestinatio,
+                    style: const TextStyle(fontSize: 14, color: Colors.white70),
+                  ),
+                  Text(
+                    "Zone: $dzone",
+                    style: const TextStyle(fontSize: 14, color: Colors.white70),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+GamoDestinationFirst
+
+
+import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:omogamo/data/data.dart';
+import 'package:omogamo/model/country_model.dart';
+import 'package:omogamo/model/destination_model.dart';
+import 'package:omogamo/model/service_model.dart';
+import 'package:omogamo/model/popular_tours_model.dart';
+import 'package:omogamo/views/details.dart';
+import 'package:omogamo/views/menu.dart';
+import 'package:flutter/material.dart' hide SearchBar;
+import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:http/http.dart' as http;
+
+class SearchBarDemoApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Search Bar Demo',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: GamoDestinations(),
+    );
+  }
+}
+
+class GamoDestinations extends StatefulWidget {
+  @override
+  _GamoDestinations createState() => _GamoDestinations();
+}
+
+class _GamoDestinations extends State<GamoDestinations> {
+  late SearchBar searchBar;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<PopularTourModel> popularTourModels = [];
+  List<CountryModel> country = [];
+  List<Service> services = [];
+  List<Destination> destinations = [];
+  bool loading = true;
+
+  Future<void> getServiceData() async {
+    final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['features'].isNotEmpty) {
+        for (var feature in data['features']) {
+          Service service = Service(
+            feature['properties']['full_name'],
+            feature['properties']['short_name'],
+            feature['properties']['zone'],
+            feature['properties']['wereda'],
+            feature['properties']['kebele'],
+            feature['properties']['locality_n'],
+            feature['properties']['phone_line'],
+            feature['properties']['email'],
+            feature['properties']['Service'],
+            feature['properties']['service_ty'],
+            feature['properties']['code'],
+            feature['properties']['img'],
+            feature['properties']['website'],
+            feature['geometry']['coordinates'][0],
+            feature['geometry']['coordinates'][1],
+          );
+          services.add(service);
+        }
+      }
+    } else {
+      print("Failed to load service data");
+    }
+  }
+
+  Future<void> getDestinationData() async {
+    final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json"));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        for (var item in data) {
+          Destination destination = Destination(
+            item['full_name'],
+            item['short_name'],
+            item['zone'],
+            item['wereda'],
+            item['kebele'],
+            item['organizati'],
+            item['status'],
+            item['area_sqkm'],
+            item['unesco_reg'],
+            item['descriptio'],
+            item['destinatio'],
+            item['x'],
+            item['y'],
+            item['image1'],
+          );
+          destinations.add(destination);
+        }
+      }
+    } else {
+      print("Failed to load destination data");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getServiceData();
+    getDestinationData();
+    country = getCountrys();
+    popularTourModels = getPopularTours();
+    hotReload();
+  }
+
+  Future<void> hotReload() async {
+    Future.delayed(Duration(seconds: 6)).then((_) {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
+Widget buildServiceTile(int index) {
+  return ServiceListTile(
+    fullname: services[index].fullname,
+    shortname: services[index].shortname,
+    img: services[index].img,
+    zone: services[index].zone,
+    code: services[index].code.toString(), // Convert int to String
+    wereda: services[index].wereda,
+    xcoordinates: services[index].xcoordinates,
+    ycoordinates: services[index].ycoordinates,
+    phoneLine: services[index].phoneLine,
+    phoneNobile: services[index].phoneNobile,
+    website: services[index].website,
+  );
+}
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.all(1),
+          child: Image.asset(
+            "assets/images/logomenu.png",
+            height: 40,
+            width: 40,
+          ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("assets/images/logo.png", height: 25),
+          ],
+        ),
+        actions: [
+          InkWell(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Icon(Icons.more_vert, color: Color(0xff000000)),
+            ),
+           onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => MenuPage(key: UniqueKey()), // Added key argument
+    ),
+  );
+},
+
+          ),
+        ],
+        elevation: 0.0,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                onChanged: (searchText) {
+                  searchText = searchText.toLowerCase();
+                  setState(() {
+                    destinations = destinations.where((u) {
+                      var fName = u.dfullname.toLowerCase();
+                      var lName = u.dfullname.toLowerCase();
+                      return fName.contains(searchText) || lName.contains(searchText);
+                    }).toList();
+                  });
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Search Places',
+                ),
+              ),
+              SizedBox(height: 18),
+              const Text(
+                "Gamo Zone Hotels",
+                style: TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 15),
+              loading
+                  ? Center(child: CircularProgressIndicator())
+                  : Container(
+                      height: 250,
+                      child: ListView.builder(
+                        itemCount: services.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return buildServiceTile(index);
+                        },
+                      ),
+                    ),
+              SizedBox(height: 20),
+              const Text(
+                "Gamo Zone Sites",
+                style: TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: 20),
+              loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 0,
+                      ),
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: destinations.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PopularTours(
+                          dfullname: destinations[index].dfullname,
+                          dshortname: destinations[index].dshortname,
+                          ddestinatio: destinations[index].ddestinatio,
+                          dunescoreg: destinations[index].dunescoreg,
+                          destinationnnn: destinations[index].destinationnnn,
+                          dcoordinates: destinations[index].dcoordinates,
+                          dcoordinatesy: destinations[index].dcoordinatesy,
+                          dzone: destinations[index].dzone,
+                          imgdest: destinations[index].imgdest,
+                        );
+                      },
+                    ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PopularTours extends StatelessWidget {
+  final String dfullname;
+  final String dshortname;
+  final String ddestinatio;
+  final String dunescoreg;
+  final double dcoordinates;
+  final double dcoordinatesy;
+  final String destinationnnn;
+  final String dzone;
+  final String imgdest;
+
+  PopularTours({
+    required this.dfullname,
+    required this.dshortname,
+    required this.ddestinatio,
+    required this.dunescoreg,
+    required this.destinationnnn,
+    required this.dcoordinates,
+    required this.dcoordinatesy,
+    required this.dzone,
+    required this.imgdest,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Details(
+              imgUrl: imgdest,
+              placeName: dfullname.length > 15
+                  ? dfullname.substring(0, 15) + '...'
+                  : dfullname,
+              rating: 4.5,
+              dcoordinates: dcoordinates,
+              dcoordinatesy: dcoordinatesy,
+              ddestinatio: ddestinatio,
+              dfullname: dfullname,
+              imgdest: imgdest,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        height: 130,
+        margin: const EdgeInsets.only(left: 0, top: 10),
+        decoration: const BoxDecoration(
+          color: Colors.brown,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+            topLeft: Radius.circular(5),
+            topRight: Radius.circular(5),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(5),
+                topRight: Radius.circular(5),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: imgdest,
+                height: 100,
+                width: 210,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 7),
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                dfullname,
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                dshortname,
+                style: const TextStyle(
+                  fontSize: 8,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class ServiceListTile extends StatelessWidget {
+  final String fullname;
+  final String shortname;
+  final String img;
+  final String zone;
+  final String code;
+  final String wereda;
+  final double xcoordinates;
+  final double ycoordinates;
+  final String phoneLine;
+  final String phoneNobile;
+  final String website;
+
+  ServiceListTile({
+    required this.fullname,
+    required this.shortname,
+    required this.img,
+    required this.zone,
+    required this.code,
+    required this.wereda,
+    required this.xcoordinates,
+    required this.ycoordinates,
+    required this.phoneLine,
+    required this.phoneNobile,
+    required this.website,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Details(
+              imgUrl: img,
+              placeName: fullname,
+              rating: 4.5,
+              dcoordinates: xcoordinates,
+              dcoordinatesy: ycoordinates,
+              ddestinatio: "Destination Details",
+              dfullname: fullname,
+              imgdest: img,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 0, top: 10),
+        decoration: BoxDecoration(
+          color: Colors.brown,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: img,
+                height: 110,
+                width: 220,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Text(
+              fullname.length > 15 ? '${fullname.substring(0, 15)}...' : fullname,
+              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            Text(
+              "Code $code",
+              style: TextStyle(color: Colors.yellow, fontSize: 12, fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+first service github 
+
+https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json
+
+
+first destination github
+https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json

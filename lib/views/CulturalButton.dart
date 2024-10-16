@@ -68,42 +68,42 @@ class _CulturalButton extends State<CulturalButton> {
 
   bool loading = true;
 
-  Future<void> getData() async {
-    try {
-      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
-      if (response.statusCode == 200) {
-        String data = response.body;
-        var decodedData = jsonDecode(data);
+  // Future<void> getData() async {
+  //   try {
+  //     final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+  //     if (response.statusCode == 200) {
+  //       String data = response.body;
+  //       var decodedData = jsonDecode(data);
         
-        if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
-          for (var feature in decodedData['features']) {
-            Service serv = Service(
-              feature['properties']['full_name'] ?? '',
-              feature['properties']['short_name'] ?? '',
-              feature['properties']['zone'] ?? '',
-              feature['properties']['wereda'] ?? '',
-              feature['properties']['kebele'] ?? '',
-              feature['properties']['locality_n'] ?? '',
-              feature['properties']['phone_line'] ?? '',
-              feature['properties']['email'] ?? '',
-              feature['properties']['Service'] ?? '',
-              feature['properties']['service_ty'] ?? '',
-              feature['properties']['code'] ?? '',
-              feature['properties']['img'] ?? '',
-              feature['properties']['website'] ?? '',
-              feature['geometry']['coordinates']?[0] ?? 0.0,
-              feature['geometry']['coordinates']?[1] ?? 0.0,
-            );
-            services.add(serv);
-          }
-        }
-      } else {
-        print("Failed to get a successful response");
-      }
-    } catch (e) {
-      print("Error occurred: $e");
-    }
-  }
+  //       if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
+  //         for (var feature in decodedData['features']) {
+  //           Service serv = Service(
+  //             feature['properties']['full_name'] ?? '',
+  //             feature['properties']['short_name'] ?? '',
+  //             feature['properties']['zone'] ?? '',
+  //             feature['properties']['wereda'] ?? '',
+  //             feature['properties']['kebele'] ?? '',
+  //             feature['properties']['locality_n'] ?? '',
+  //             feature['properties']['phone_line'] ?? '',
+  //             feature['properties']['email'] ?? '',
+  //             feature['properties']['Service'] ?? '',
+  //             feature['properties']['service_ty'] ?? '',
+  //             feature['properties']['code'] ?? '',
+  //             feature['properties']['img'] ?? '',
+  //             feature['properties']['website'] ?? '',
+  //             feature['geometry']['coordinates']?[0] ?? 0.0,
+  //             feature['geometry']['coordinates']?[1] ?? 0.0,
+  //           );
+  //           services.add(serv);
+  //         }
+  //       }
+  //     } else {
+  //       print("Failed to get a successful response");
+  //     }
+  //   } catch (e) {
+  //     print("Error occurred: $e");
+  //   }
+  // }
 
   Future<void> getdestinationData() async {
     try {
@@ -144,7 +144,7 @@ class _CulturalButton extends State<CulturalButton> {
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
     getdestinationData().then((_) {
       originalDestination.addAll(destination);
       country = getCountrys();

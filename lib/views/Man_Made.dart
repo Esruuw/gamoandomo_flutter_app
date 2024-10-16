@@ -287,7 +287,7 @@ late SearchBar searchBar;
     var inkWell = InkWell(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(
+            child: const Icon(
               Icons.more_vert,
              color: Color(0xff000000),
             ),
@@ -405,7 +405,7 @@ late SearchBar searchBar;
           });
         },
         // controller: _textController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           prefixIcon: Icon(Icons.search),
           hintText: 'Search Places',
@@ -423,10 +423,10 @@ late SearchBar searchBar;
   );
 },
                 ),
-                SizedBox(
+                const SizedBox(
                 height: 18,
               ),
-Row(
+const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                  
@@ -469,7 +469,7 @@ Row(
                                    
                                    
                                    
-                                                 SizedBox(
+                                                 const SizedBox(
                                                    height: 4,
                                                  ),
                                                 //  Text(
@@ -482,12 +482,12 @@ Row(
                                                 //  ),
                                                  // Spacer(),
                                                  
-                                                 SizedBox(
+                                                 const SizedBox(
                                                    height: 1,
                                                  ),
                                    
                                    
-                                                 SizedBox(
+                                                 const SizedBox(
                                                    height: 1,
                                                  ),
                                    
@@ -498,10 +498,10 @@ Row(
                                                 //   ),
                                                 //  Spacer(),
                                                  
-                                                 SizedBox(
+                                                 const SizedBox(
                                                    height: 2,
                                                  ),
-                                                 SizedBox(
+                                                 const SizedBox(
                                                    height: 8,
                                                  ),
                                    
@@ -520,10 +520,10 @@ Row(
                                                 //          return listOfServices(index);
                                                 //        }),
                                                 //  ),
-                                                 SizedBox(
+                                                 const SizedBox(
                                                    height: 28,
                                                  ),
-                                                 Text(
+                                                 const Text(
                                                    "Attractions Site's",
                                                    style: TextStyle(
                                                        fontSize: 20,
@@ -537,7 +537,7 @@ Row(
                                                  //       color: Colors.black54,
                                                  //       fontWeight: FontWeight.w600),
                                                  // ),
-                                                 SizedBox(
+                                                 const SizedBox(
                                                    height: 12,
                                                  ),
                                    
@@ -768,11 +768,7 @@ Row(
 // }
 
 class PopularTours extends StatelessWidget {
-  // final String imgUrl;
-  // final String title;
-  // final String desc;
-  // final String price;
-  // final double rating;
+
   final String dfullname;
   final String dshortname;
  // final String destimated;
@@ -834,7 +830,7 @@ class PopularTours extends StatelessWidget {
           if (destinationnnn == "Man Made") 
 
             ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   bottomLeft: Radius.circular(20)),
 
@@ -861,23 +857,23 @@ class PopularTours extends StatelessWidget {
                 children: [
                   Text(
                     dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff4E6059)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 3,
                   ),
                   Text(
                     //"description", // desc
                     "Zone:" + dzone,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff89A097)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
                   if(destinationnnn == "Man Made")
@@ -886,7 +882,7 @@ class PopularTours extends StatelessWidget {
                     //dunescoreg + "sdafl",
 
                     "Type: " + destinationnnn,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff4E6059)),
