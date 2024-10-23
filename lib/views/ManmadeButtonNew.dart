@@ -1,53 +1,25 @@
-// ignore_for_file: unused_import
-
 import 'dart:convert';
-// import 'dart:html';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:omogamo/data/data.dart';
 import 'package:omogamo/model/country_model.dart';
-import 'package:omogamo/model/destination_newModel.dart';
-import 'package:omogamo/model/service_model.dart';
-// import 'package:omogamo/views/home.dart';
-// import 'package:omogamo/views/hhome.dart';
-
-import 'package:omogamo/model/imagedb.dart';
+import 'package:omogamo/model/destination_model.dart';
+import 'package:omogamo/model/new_service_model.dart';
 import 'package:omogamo/model/popular_tours_model.dart';
-import 'package:omogamo/views/details.dart';
-import 'package:omogamo/utils/colors.dart';
-import 'package:omogamo/views/menu.dart';
 import 'package:omogamo/views/detailsservice.dart';
-import 'package:omogamo/views/loading_widget.dart';
-// import 'package:discounttour/views/menu.dart';
-import 'package:omogamo/utils/next_screen.dart';
-import 'package:flutter_search_bar/flutter_search_bar.dart' ;
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:http/http.dart' as http;
-// import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-// import 'package:discounttour/utils/next_screen.dart';
-// class SearchBarDemoApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//         title: 'Search Bar Demo',
-//         theme: new ThemeData(primarySwatch: Colors.blue),
-//         home: new Home());
-//   }
-// }
-
+import 'package:omogamo/views/menu.dart';
 
 class SearchBarDemoApp extends StatelessWidget {
   @override
-  
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      // double totalSearchBarSize;
-        title: 'Search Bar Demo',
-        theme: new ThemeData(primarySwatch: Colors.blue),
-        home: new SearchBarDemoApp()
-        
-        );
+    return MaterialApp(
+      title: 'Search Bar Demo',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: SearchBarDemoApp(),  // Fixed this line (it should refer to your StatefulWidget)
+    );
   }
-  
 }
 
 class ManmadeButtonNew extends StatefulWidget {
@@ -57,336 +29,375 @@ class ManmadeButtonNew extends StatefulWidget {
 }
 
 class _ManmadeButtonNew extends State<ManmadeButtonNew> {
-  bool isItemAvailable = true;
-  late SearchBar searchBar;
+  late SearchBar searchBar;  // Declaring searchBar as late
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text('Search Bar Demo'),
+      actions: [searchBar.getSearchAction(context)],
+    );
+  }
 
   List<PopularTourModel> popularTourModels = [];
   List<CountryModel> country = [];
-  List<Service> services = [];
+  List<New_Service> services = [];
   List<Destination> destination = [];
-  List<Destination> originalDestination = [];
-
   bool loading = true;
+  
+Future<void> getData() async {
+  try {
+    final response = await http.get(Uri.parse("https://esruuw.github.io/new_tourism_g_omo_service/ga_omo_service.json"));
 
+    if (response.statusCode == 200) {
+      String data = response.body;
+      // Removed print("Response body: $data");
 
-  Future<void> getdestinationData() async {
-    try {
-      final response = await http.get(Uri.parse("https://esruuw.github.io/tourism_destination/destination.json"));
-      if (response.statusCode == 200) {
-        String data = response.body;
-        var decodedDatatwo = jsonDecode(data);
-        
-        if (decodedDatatwo != null && decodedDatatwo.isNotEmpty) {
-          for (var item in decodedDatatwo) {
-            Destination destiny = Destination(
-              item['full_name'] ?? '',
-              item['short_name'] ?? '',
-              item['zone'] ?? '',
-              item['wereda'] ?? '',
-              item['kebele'] ?? '',
-              item['organizati'] ?? '',
-              item['status'] ?? '',
-              item['area_sqkm'] ?? '',
-              item['unesco_reg'] ?? '',
-              item['descriptio'] ?? '',
-              item['destinatio'] ?? '',
-              item['x'] ?? 0.0,
-              item['y'] ?? 0.0,
-              item['image1'] ?? '',
-            );
-            destination.add(destiny);
-          }
-        }
-      } else {
-        print("Failed to get a successful response");
+      var decodedData = jsonDecode(data);
+
+      if (decodedData == null) {
+        // Removed print("Error: Decoded data is null");
+        return;
       }
-    } catch (e) {
-      print("Error occurred: $e");
+
+      if (decodedData.isEmpty) {
+        // Removed print("Empty data received");
+      } else if (decodedData is List) {  // Ensure it's a List
+        // Removed print("Data is a list");
+
+        for (var i = 0; i < decodedData.length; i++) {
+          var properties = decodedData[i] ?? {};  // Safely get the properties
+          if (properties.isEmpty) {
+            continue;
+          }
+
+          // Safely access each property
+            New_Service serv = New_Service(
+            int.tryParse(properties['id'].toString()) ?? 0,
+            properties['geom'] ?? '',
+            int.tryParse(properties['objectid'].toString()) ?? 0,
+            double.tryParse(properties['x'].toString()) ?? 0.0,
+            double.tryParse(properties['y'].toString()) ?? 0.0,
+            double.tryParse(properties['z'].toString()) ?? 0.0,
+            int.tryParse(properties['code'].toString()) ?? 0,
+            properties['full_name'] ?? '',
+            properties['short_name'] ?? '',
+            properties['zone'] ?? '',
+            properties['wereda'] ?? '',
+            properties['kebele'] ?? '',
+            properties['phone_line'] ?? '',
+            properties['email'] ?? '',
+            properties['website'] ?? '',
+            properties['service_ty'] ?? '',
+            properties['owner_name'] ?? '',
+            properties['moto'] ?? '',
+            properties['image1'] ?? ''
+          );
+
+          services.add(serv);
+        }
+      } 
+      else
+       {
+      }
+    } else {
     }
   }
+   catch (e) 
+   {
+    // Removed print("An error occurred: $e");
+  }
+}
+
+
 
   @override
   void initState() {
     super.initState();
-    // getData();
-    getdestinationData().then((_) {
-      originalDestination.addAll(destination);
-      country = getCountrys();
-      popularTourModels = getPopularTours();
-      hotReload();
-    });
+    getData();
+    country = getCountrys();
+    popularTourModels = getPopularTours();
+    loading = true;
+    hotReload();
   }
 
   Future<void> hotReload() async {
-    Future.delayed(Duration(seconds: 6)).then((_) {
+    Future.delayed(const Duration(seconds: 6)).then((value) {
       setState(() {
         loading = false;
       });
     });
   }
 
-  @override
+  listOfServices(index) {
+    return CountryListTile(
+      fullname: services[index].fullName,
+      shortname: services[index].shortName ?? '',
+      // img: 'img_url', // Use a valid image URL
+      zone: services[index].zone,
+      code: services[index].code,
+      wereda: services[index].wereda,
+      xcoordinates: services[index].x,
+      ycoordinates: services[index].y,
+      phoneLine: services[index].phoneLine ?? '',
+      phoneNobile: 'mobile_number', // Add a proper field for mobile number
+      website: services[index].website ?? '',
+      img: services[index].img,
+
+    );
+  }
+
+   @override
   Widget build(BuildContext context) {
+    var inkWell = InkWell(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: const Icon(
+              Icons.more_vert,
+             color: Color(0xff000000),
+            ),
+          ),
+          // onTap: () {
+          //           nextScreen(context, MenuPage());
+          //         },
+          
+                     onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => MenuPage(key: UniqueKey()),
+    ),
+  );
+},
+          
+          // onTap: () => Home(),
+          );
+      
+     
     return Scaffold(
       appBar: AppBar(
         leading: Container(
-          color: Color(0xffC4CEDD),
-          padding: EdgeInsets.all(1),
+          color: const Color(0xffC4CEDD),
+          padding: const EdgeInsets.all(1),
           child: Image.asset(
-            "assets/images/logomenu.png",
+             "assets/images/logomenu.png",
             height: 40,
-            width: 40,
+            width: 40,    
           ),
+          
         ),
+        
         title: Row(
+          
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               "assets/images/logo.png",
               height: 25,
             ),
+       
           ],
         ),
+
         actions: [
-          InkWell(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: const Icon(
-                Icons.more_vert,
-                color: Color(0xff000000),
-              ),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MenuPage(key: UniqueKey()),
-                ),
-              );
-            },
-          ),
+          inkWell,
         ],
+      
         elevation: 0.0,
+        
       ),
-      body: SingleChildScrollView(
+           
+      body:SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                autofocus: false,
-                onChanged: (searchText) {
-                  searchText = searchText.toLowerCase();
-                  setState(() {
-                    if (searchText.isEmpty) {
-                      destination = List.from(originalDestination);
-                    } else {
-                      destination = originalDestination.where((u) {
-                        var fName = u.dfullname.toLowerCase();
-                        return fName.contains(searchText);
-                      }).toList();
-                    }
-                    isItemAvailable = destination.isNotEmpty;
-                  });
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search Places',
-                ),
-              ),
-              const SizedBox(height: 18),
-              const Text(
-                "Cultural Destinations",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Divider(color: Colors.blue),
-              loading
-                  ? Center(child: CircularProgressIndicator())
-                  : GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 0,
-                      ),
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: destination.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var currentDestination = destination[index];
-                        if (currentDestination.dzone == "Gamo") {
-                          return PopularTours(
-                            dfullname: currentDestination.dfullname,
-                            ddestinatio: currentDestination.ddestinatio,
-                            dunescoreg: currentDestination.dunescoreg,
-                            dshortname: currentDestination.dshortname,
-                            dcoordinates: currentDestination.dcoordinates,
-                            dcoordinatesy: currentDestination.dcoordinatesy,
-                            destinationnnn: currentDestination.destinationnnn,
-                            dzone: currentDestination.dzone,
-                            imgdest: currentDestination.imgdest,
-                          );
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      },
-                    ),
-              if (!loading && !isItemAvailable)
-                const Center(
-                  child: Text(
-                    'Destination not available',
-                    style: TextStyle(fontSize: 18, color: Colors.red),
-                  ),
-                ),
-            ],
-          ),
+              InkWell(
+                  child: Container(
+              
+                    
+      child: TextField(
+        autofocus: false,
+        onChanged: (searchText) {
+          searchText = searchText.toLowerCase();
+          setState(() {
+            services = services.where((u) {
+              var fName = u.fullName.toLowerCase();
+              var lName = u.fullName.toLowerCase();
+              var job = u.fullName.toLowerCase();
+              return fName.contains(searchText) || lName.contains(searchText) || job.contains(searchText);
+            }).toList();
+          });
+        },
+        // controller: _textController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.search),
+          hintText: 'Search Places',
         ),
       ),
-    );
-  }
+      ),
+                      onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => MenuPage(key: UniqueKey()),
+    ),
+  );
+},
+                ),
+                const SizedBox(
+                height: 18,
+              ),
+              const Divider(
+color: Colors.blue, 
+),
+
+ 
+                       const Row(children: [
+
+                          Text(
+                                 "Hotel and Restaurant",
+                                 style: TextStyle(
+                                 fontSize: 20,
+                                 color: Colors.black54,
+                                 fontWeight: FontWeight.w600),
+                               ),
+               
+                     ],),
+                         
+    loading == true ? Center(child: CircularProgressIndicator()) :
+                                                  SingleChildScrollView(
+                                                    child:Container(
+                                                  // height: 1000,
+                                                   width: double.infinity,
+                                                   child: ListView.builder(
+                                                   itemCount: services.length,
+                                                   shrinkWrap: true,
+                                                   physics: ClampingScrollPhysics(),
+                                                   scrollDirection: Axis.vertical,
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                    return  listOfServices(index);
+                                                       }),
+                                                 ),
+                                                ),
+
+                              ],
+                             )
+                                                                  
+                              ),
+                                 ),
+                                                              
+                            );  
+                                                       
+                                                        }
 }
-                
-class PopularTours extends StatelessWidget {
-  // final String imgUrl;
-  // final String title;
-  // final String desc;
-  // final String price;
-  // final double rating;
-  final String dfullname;
-  final String dshortname;
- // final String destimated;
-  final String ddestinatio;
-  final String dunescoreg;
-  final double dcoordinates;
-  final double dcoordinatesy;
-  final String destinationnnn;
-  final String dzone;
-  final String imgdest;
-  PopularTours(
-      {
-      //   @required this.imgUrl,
-      // @required this.rating,
-      // @required this.desc,
-      // @required this.price,
-      // @required this.title,
 
-  required this.dfullname,
-  required this.dshortname,
-  //   @required this.destimated,
-  required this.ddestinatio,
-  required this.dunescoreg,
-  required this.destinationnnn,
-  required this.dcoordinates,
-  required this.dcoordinatesy,
-  required this.dzone,
-  required this.imgdest,
+class CountryListTile extends StatelessWidget {
+  final String fullname;
+  final double xcoordinates;
+  final double ycoordinates;
+  final String shortname;
+  final String img;
+  final String zone;
+  final String phoneLine;
+  final String phoneNobile;
+  final int code;
+  final String wereda;
+  final String website;
 
-      });
+  CountryListTile({
+    required this.fullname,
+    required this.xcoordinates,
+    required this.ycoordinates,
+    required this.shortname,
+    required this.img,
+    required this.zone,
+    required this.phoneLine,
+    required this.phoneNobile,
+    required this.code,
+    required this.wereda,
+    required this.website,
+
+  });
 
   @override
   Widget build(BuildContext context) {
-                  
-if(dzone == "Gamo")
-{
     return GestureDetector(
-
       onTap: () {
-
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Details(
-                      imgUrl: imgdest,
-                      placeName: dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
-                      rating: 4.5,
-                      dcoordinates: dcoordinates,
-                      dcoordinatesy: dcoordinatesy,
-                      ddestinatio: ddestinatio,
-                      dfullname: dfullname,
-                      imgdest: imgdest,
-                      
-                    
-                      
-                    )
-                    )
-                    );
+          context,
+          MaterialPageRoute(
+            builder: (context) => Detailsservice(
+              imgUrl: img,
+              placeName: fullname.length > 15 ? fullname.substring(0, 15) + '...' : fullname,
+              rating: 4.5,
+              fullname: fullname,
+              zone: zone,
+              code: code,
+              phoneLine: phoneLine,
+              phoneNobile: phoneNobile,
+              website: website,
+              xcoordinates: xcoordinates,
+              ycoordinates: ycoordinates,
+              wereda: wereda,
+              img: img,
+            ),
+          ),
+        );
       },
-        child:  Container(
+     child:Container(
+
         margin: const EdgeInsets.only(left: 0,top: 10),
         decoration: const BoxDecoration(
-
-      color: Color.fromARGB(255, 7, 190, 114), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10),topLeft:Radius.circular(5), topRight:Radius.circular(5), )),
+            color: Colors.black, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10),topLeft:Radius.circular(5), topRight:Radius.circular(5), )),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             ClipRRect(
-              borderRadius:BorderRadius.circular(5),
-               child: CachedNetworkImage(
-                imageUrl: imgdest,
-                width: 170,
-                height: 90,
+               borderRadius:BorderRadius.circular(5),
+               
+              child: CachedNetworkImage(
+                imageUrl: img,
+                width: 344,
+                height: 150,
                 fit: BoxFit.cover,
               ),
                ),
-                       Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-
+                 // maqaa isa duree
+                  
                   const SizedBox(
                     height: 3,
                   ),
-                                Text(
-                    dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
+                                    Text(
+                    fullname.length > 15 ? fullname.substring(0, 15) + '...' : fullname,
                     style: const TextStyle(
-                      
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  //   Text(
-                  //   //dunescoreg + "sdafl",
-                  //   "" + destinationnnn,
-                  //   style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.w300,
-                  //       color: Colors.white),
-                  // ),
 
-
-                     Text(
-                    //dunescoreg + "sdafl",
-                    "" + dzone,
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),                 
+                 
                   const SizedBox(
                     height: 6,
                   ),
  
-                  //Text(
+                  Text(
                     //dunescoreg + "sdafl",
-                  //   "Zone: " + dzone,
-                  //   style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.w300,
-                  //       color: Colors.white),
-                  // )
+                    "Zone: " + zone,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white),
+                  )
                 ],
               ),
             ),
@@ -394,13 +405,6 @@ if(dzone == "Gamo")
           ],
         ),
       ),
-
-      );
-}
-else
-{
-  return Container(alignment: null, height: 0.0, width: 0.0,);
-}           
+    );
   }
 }
-

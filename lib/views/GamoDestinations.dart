@@ -7,10 +7,10 @@ import 'package:omogamo/data/data.dart';
 import 'package:omogamo/model/country_model.dart';
 import 'package:omogamo/model/destination_model.dart';
 import 'package:omogamo/model/popular_tours_model.dart';
-import 'package:omogamo/model/service_model.dart';
 import 'package:omogamo/views/detailsservice.dart';
 import 'package:omogamo/views/details.dart';
 import 'package:omogamo/views/menu.dart';
+import 'package:omogamo/model/new_service_model.dart';
 
 class GamoDestinations extends StatefulWidget {
   @override
@@ -23,56 +23,73 @@ class _GamoDestinationsState extends State<GamoDestinations> {
 
   List<PopularTourModel> popularTourModels = [];
   List<CountryModel> country = [];
-  List<Service> services = [];
+  List<New_Service> services = [];
   List<Destination> destination = [];
   List<Destination> originalDestination = [];
 
   bool loading = true;
 
- Future<void> getData() async {
+Future<void> getData() async {
   try {
-    final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+    final response = await http.get(Uri.parse("https://esruuw.github.io/new_tourism_g_omo_service/ga_omo_service.json"));
 
     if (response.statusCode == 200) {
       String data = response.body;
-      print("Got the response from destination");
+      // Removed print("Response body: $data");
+
       var decodedData = jsonDecode(data);
-      print("The below is decoded Destination Data");
 
-      if (decodedData['features'].isEmpty) {
-        print("Empty");
-      } else {
-        for (var i = 0; i < decodedData['features'].length; i++) {
-          var feature = decodedData['features'][i];
-          var properties = feature['properties'];
-          var geometry = feature['geometry'];
+      if (decodedData == null) {
+        // Removed print("Error: Decoded data is null");
+        return;
+      }
 
-          Service serv = Service(
+      if (decodedData.isEmpty) {
+        // Removed print("Empty data received");
+      } else if (decodedData is List) {  // Ensure it's a List
+        // Removed print("Data is a list");
+
+        for (var i = 0; i < decodedData.length; i++) {
+          var properties = decodedData[i] ?? {};  // Safely get the properties
+          if (properties.isEmpty) {
+            continue;
+          }
+
+          // Safely access each property
+            New_Service serv = New_Service(
+            int.tryParse(properties['id'].toString()) ?? 0,
+            properties['geom'] ?? '',
+            int.tryParse(properties['objectid'].toString()) ?? 0,
+            double.tryParse(properties['x'].toString()) ?? 0.0,
+            double.tryParse(properties['y'].toString()) ?? 0.0,
+            double.tryParse(properties['z'].toString()) ?? 0.0,
+            int.tryParse(properties['code'].toString()) ?? 0,
             properties['full_name'] ?? '',
             properties['short_name'] ?? '',
             properties['zone'] ?? '',
             properties['wereda'] ?? '',
             properties['kebele'] ?? '',
-            properties['locality_n'] ?? '',
             properties['phone_line'] ?? '',
             properties['email'] ?? '',
-            properties['Service'] ?? '',
-            properties['service_ty'] ?? '',
-            properties['code'] ?? '',
-            properties['img'] ?? '',
             properties['website'] ?? '',
-            geometry['coordinates'][0] ?? 0.0,
-            geometry['coordinates'][1] ?? 0.0,
+            properties['service_ty'] ?? '',
+            properties['owner_name'] ?? '',
+            properties['moto'] ?? '',
+            properties['image1'] ?? ''
           );
+
           services.add(serv);
         }
-        print("not empty");
+      } 
+      else
+       {
       }
     } else {
-      print("Oops, we didn't get a successful response");
     }
-  } catch (e) {
-    print("An error occurred: $e");
+  }
+   catch (e) 
+   {
+    // Removed print("An error occurred: $e");
   }
 }
 
@@ -139,22 +156,22 @@ class _GamoDestinationsState extends State<GamoDestinations> {
 
 
 
-  listOfServices(index) { 
+  listOfServices(index) {
     return CountryListTile(
-            fullname: services[index].fullname,
-            shortname: services[index].shortname,
-            img: services[index].img,
-            // myData[index]['logo_url'],
-            zone: services[index].zone,
-            code: services[index].code,
-            wereda: services[index].wereda,
-            xcoordinates: services[index].xcoordinates,
-            ycoordinates: services[index].ycoordinates,
-            phoneLine: services[index].phoneLine,
-            phoneNobile:services[index].phoneNobile,
-            website: services[index].website,
+      fullname: services[index].fullName,
+      shortname: services[index].shortName ?? '',
+      // img: 'img_url', // Use a valid image URL
+      zone: services[index].zone,
+      code: services[index].code,
+      wereda: services[index].wereda,
+      xcoordinates: services[index].x,
+      ycoordinates: services[index].y,
+      phoneLine: services[index].phoneLine ?? '',
+      phoneNobile: 'mobile_number', // Add a proper field for mobile number
+      website: services[index].website ?? '',
+      img: services[index].img,
 
-          );
+    );
   }
 
   @override

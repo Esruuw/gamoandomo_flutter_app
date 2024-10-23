@@ -203,7 +203,7 @@ class _Detailsservice extends State<Detailsservice> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FeaturesTile(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.phone,
                       color: Color(0xff1A4160),
                     ),
@@ -212,7 +212,7 @@ class _Detailsservice extends State<Detailsservice> {
                     longitude: lon,
                   ),
                   Link(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.link_sharp,
                       color: Color(0xff1A4160),
                     ),
@@ -221,7 +221,7 @@ class _Detailsservice extends State<Detailsservice> {
                     longitude: lon,
                   ),
                   Sharetofrd(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.merge_type_sharp,
                       color: Color(0xff1A4160),
                     ),

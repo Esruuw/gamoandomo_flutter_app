@@ -18,6 +18,7 @@ class New_Service {
   String serviceType;
   String ownerName;
   String? moto;
+  String img;
   
   // double geometry;
 
@@ -40,5 +41,6 @@ class New_Service {
      this.serviceType,
      this.ownerName,
     this.moto,
+    this.img,
   );
 }

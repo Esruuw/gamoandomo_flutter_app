@@ -1,12 +1,26 @@
+// ignore_for_file: unused_import
+
 import 'dart:convert';
+// import 'dart:html';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:omogamo/data/data.dart';
 import 'package:omogamo/model/country_model.dart';
 import 'package:omogamo/model/destination_model.dart';
 import 'package:omogamo/model/service_model.dart';
+// import 'package:omogamo/views/home.dart';
+// import 'package:omogamo/views/hhome.dart';
+
+import 'package:omogamo/model/imagedb.dart';
+import 'package:omogamo/model/popular_tours_model.dart';
 import 'package:omogamo/views/details.dart';
+import 'package:omogamo/utils/colors.dart';
 import 'package:omogamo/views/menu.dart';
-import 'package:flutter/material.dart';
+import 'package:omogamo/views/detailsservice.dart';
+import 'package:omogamo/views/loading_widget.dart';
+// import 'package:discounttour/views/menu.dart';
+import 'package:omogamo/utils/next_screen.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart' ;
+import 'package:flutter/material.dart' hide SearchBar;
 import 'package:http/http.dart' as http;
 
 // void main() => runApp(SearchBarDemoApp());
@@ -28,46 +42,46 @@ class _AllDestinations extends State<AllDestinations> {
 
   bool loading = true;
 
-  Future<void> getData() async {
-    try {
-      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
-      if (response.statusCode == 200) {
-        String data = response.body;
-        var decodedData = jsonDecode(data);
+  // Future<void> getData() async {
+  //   try {
+  //     final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+  //     if (response.statusCode == 200) {
+  //       String data = response.body;
+  //       var decodedData = jsonDecode(data);
         
-        if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
-          for (var feature in decodedData['features']) {
-            Service serv = Service(
-              feature['properties']['full_name'] ?? '',
-              feature['properties']['short_name'] ?? '',
-              feature['properties']['zone'] ?? '',
-              feature['properties']['wereda'] ?? '',
-              feature['properties']['kebele'] ?? '',
-              feature['properties']['locality_n'] ?? '',
-              feature['properties']['phone_line'] ?? '',
-              feature['properties']['email'] ?? '',
-              feature['properties']['Service'] ?? '',
-              feature['properties']['service_ty'] ?? '',
-              feature['properties']['code'] ?? '',
-              feature['properties']['img'] ?? '',
-              feature['properties']['website'] ?? '',
-              feature['geometry']['coordinates']?[0] ?? 0.0,
-              feature['geometry']['coordinates']?[1] ?? 0.0,
-            );
-            services.add(serv);
-          }
-        }
-      } else {
-        print("Failed to get a successful response");
-      }
-    } catch (e) {
-      print("Error occurred: $e");
-    }
-  }
+  //       if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
+  //         for (var feature in decodedData['features']) {
+  //           Service serv = Service(
+  //             feature['properties']['full_name'] ?? '',
+  //             feature['properties']['short_name'] ?? '',
+  //             feature['properties']['zone'] ?? '',
+  //             feature['properties']['wereda'] ?? '',
+  //             feature['properties']['kebele'] ?? '',
+  //             feature['properties']['locality_n'] ?? '',
+  //             feature['properties']['phone_line'] ?? '',
+  //             feature['properties']['email'] ?? '',
+  //             feature['properties']['Service'] ?? '',
+  //             feature['properties']['service_ty'] ?? '',
+  //             feature['properties']['code'] ?? '',
+  //             feature['properties']['img'] ?? '',
+  //             feature['properties']['website'] ?? '',
+  //             feature['geometry']['coordinates']?[0] ?? 0.0,
+  //             feature['geometry']['coordinates']?[1] ?? 0.0,
+  //           );
+  //           services.add(serv);
+  //         }
+  //       }
+  //     } else {
+  //       print("Failed to get a successful response");
+  //     }
+  //   } catch (e) {
+  //     print("Error occurred: $e");
+  //   }
+  // }
 
-  Future<void> getdestinationData() async {
+ Future<void> getdestinationData() async {
     try {
-      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json"));
+      final response = await http.get(Uri.parse("https://esruuw.github.io/tourism_destination/destination.json"));
       if (response.statusCode == 200) {
         String data = response.body;
         var decodedDatatwo = jsonDecode(data);
@@ -104,11 +118,11 @@ class _AllDestinations extends State<AllDestinations> {
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
     getdestinationData().then((_) {
       originalDestination.addAll(destination);
       country = getCountrys();
-      popularTourModels = getPopularTours().cast<PopularTours>();
+      // popularTourModels = getPopularTours();
       hotReload();
     });
   }
@@ -247,8 +261,9 @@ class _AllDestinations extends State<AllDestinations> {
     );
   }
 }
-
+                
 class PopularTours extends StatelessWidget {
+  
   final String dfullname;
   final String dshortname;
   final String ddestinatio;
@@ -258,96 +273,118 @@ class PopularTours extends StatelessWidget {
   final String destinationnnn;
   final String dzone;
   final String imgdest;
+  PopularTours(
+      {
+  
+  required this.dfullname,
+  required this.dshortname,
+  required this.ddestinatio,
+  required this.dunescoreg,
+  required this.destinationnnn,
+  required this.dcoordinates,
+  required this.dcoordinatesy,
+  required this.dzone,
+  required this.imgdest,
 
-  PopularTours({
-    required this.dfullname,
-    required this.dshortname,
-    required this.ddestinatio,
-    required this.dunescoreg,
-    required this.destinationnnn,
-    required this.dcoordinates,
-    required this.dcoordinatesy,
-    required this.dzone,
-    required this.imgdest,
-  });
+      });
 
   @override
   Widget build(BuildContext context) {
+                  
+if(dzone == "Gamo")
+{
     return GestureDetector(
+
       onTap: () {
+
         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Details(
-              imgUrl: imgdest,
-              placeName: dfullname.length > 15
-                  ? dfullname.substring(0, 15) + '...'
-                  : dfullname,
-              rating: 4.5,
-              dcoordinates: dcoordinates,
-              dcoordinatesy: dcoordinatesy,
-              ddestinatio: ddestinatio,
-              dfullname: dfullname,
-              imgdest: imgdest,
-            ),
-          ),
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => Details(
+                      imgUrl: imgdest,
+                      placeName: dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
+                      rating: 4.5,
+                      dcoordinates: dcoordinates,
+                      dcoordinatesy: dcoordinatesy,
+                      ddestinatio: ddestinatio,
+                      dfullname: dfullname,
+                      imgdest: imgdest,
+                      
+                    
+                      
+                    )
+                    )
+                    );
       },
-      child: Container(
-        height: 130,
-        margin: const EdgeInsets.only(left: 0, top: 10),
+        child:  Container(
+        margin: const EdgeInsets.only(left: 0,top: 10),
         decoration: const BoxDecoration(
-          color: Colors.brown,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-            topLeft: Radius.circular(5),
-            topRight: Radius.circular(5),
-          ),
-        ),
+
+      color: Color.fromARGB(255, 201, 10, 105), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10),topLeft:Radius.circular(5), topRight:Radius.circular(5), )),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(5),
-                topRight: Radius.circular(5),
-              ),
-              child: CachedNetworkImage(
+              borderRadius:BorderRadius.circular(5),
+               child: CachedNetworkImage(
                 imageUrl: imgdest,
-                height: 100,
-                width: 210,
+                width: 170,
+                height: 90,
                 fit: BoxFit.cover,
               ),
-            ),
-            const SizedBox(height: 7),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                dfullname,
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.white,
-                ),
+               ),
+                       Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+
+                  const SizedBox(
+                    height: 3,
+                  ),
+                                Text(
+                    dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
+                    style: const TextStyle(
+                      
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+              
+                     Text(
+                    //dunescoreg + "sdafl",
+                    "" + dzone,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),                 
+                  const SizedBox(
+                    height: 6,
+                  ),
+ 
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                dshortname,
-                style: const TextStyle(
-                  fontSize: 8,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+          
           ],
         ),
       ),
-    );
+
+      );
+}
+else
+{
+  return Container(alignment: null, height: 0.0, width: 0.0,);
+}           
   }
 }
-
 
 
 

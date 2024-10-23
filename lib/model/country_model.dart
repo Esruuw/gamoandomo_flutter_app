@@ -6,5 +6,12 @@ class CountryModel {
   String imgUrl;
 
   CountryModel(
-      {required this.countryName, required this.label, required this.noOfTours, required this.rating, required this.imgUrl});
+      {
+      required this.countryName,
+      required this.label, 
+      required this.noOfTours,
+      required this.rating,
+      required this.imgUrl
+        }
+        );
 }

@@ -15,7 +15,8 @@ class NaturalButton extends StatefulWidget {
   _NaturalButton createState() => _NaturalButton();
 }
 
-class _NaturalButton extends State<NaturalButton> {
+class _NaturalButton extends State<NaturalButton>
+ {
   bool isItemAvailable = true;
   late SearchBar searchBar;
 
@@ -27,46 +28,9 @@ class _NaturalButton extends State<NaturalButton> {
 
   bool loading = true;
 
-  Future<void> getData() async {
-    try {
-      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
-      if (response.statusCode == 200) {
-        String data = response.body;
-        var decodedData = jsonDecode(data);
-        
-        if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
-          for (var feature in decodedData['features']) {
-            Service serv = Service(
-              feature['properties']['full_name'] ?? '',
-              feature['properties']['short_name'] ?? '',
-              feature['properties']['zone'] ?? '',
-              feature['properties']['wereda'] ?? '',
-              feature['properties']['kebele'] ?? '',
-              feature['properties']['locality_n'] ?? '',
-              feature['properties']['phone_line'] ?? '',
-              feature['properties']['email'] ?? '',
-              feature['properties']['Service'] ?? '',
-              feature['properties']['service_ty'] ?? '',
-              feature['properties']['code'] ?? '',
-              feature['properties']['img'] ?? '',
-              feature['properties']['website'] ?? '',
-              feature['geometry']['coordinates']?[0] ?? 0.0,
-              feature['geometry']['coordinates']?[1] ?? 0.0,
-            );
-            services.add(serv);
-          }
-        }
-      } else {
-        print("Failed to get a successful response");
-      }
-    } catch (e) {
-      print("Error occurred: $e");
-    }
-  }
-
   Future<void> getdestinationData() async {
     try {
-      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json"));
+      final response = await http.get(Uri.parse("https://esruuw.github.io/tourism_destination/destination.json"));
       if (response.statusCode == 200) {
         String data = response.body;
         var decodedDatatwo = jsonDecode(data);
@@ -103,7 +67,7 @@ class _NaturalButton extends State<NaturalButton> {
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
     getdestinationData().then((_) {
       originalDestination.addAll(destination);
       country = getCountrys();
@@ -246,8 +210,9 @@ class _NaturalButton extends State<NaturalButton> {
     );
   }
 }
-
+                
 class PopularTours extends StatelessWidget {
+  
   final String dfullname;
   final String dshortname;
   final String ddestinatio;
@@ -257,103 +222,118 @@ class PopularTours extends StatelessWidget {
   final String destinationnnn;
   final String dzone;
   final String imgdest;
+  PopularTours(
+      {
+  
+  required this.dfullname,
+  required this.dshortname,
+  required this.ddestinatio,
+  required this.dunescoreg,
+  required this.destinationnnn,
+  required this.dcoordinates,
+  required this.dcoordinatesy,
+  required this.dzone,
+  required this.imgdest,
 
-  PopularTours({
-    required this.dfullname,
-    required this.dshortname,
-    required this.ddestinatio,
-    required this.dunescoreg,
-    required this.destinationnnn,
-    required this.dcoordinates,
-    required this.dcoordinatesy,
-    required this.dzone,
-    required this.imgdest,
-  });
+      });
 
   @override
   Widget build(BuildContext context) {
-    if (dzone == "Gamo") {
-      return GestureDetector(
-        onTap: () {
-          Navigator.push(
+                  
+if(dzone == "Gamo")
+{
+    return GestureDetector(
+
+      onTap: () {
+
+        Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Details(
-                imgUrl: imgdest,
-                placeName: dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
-                rating: 4.5,
-                dcoordinates: dcoordinates,
-                dcoordinatesy: dcoordinatesy,
-                ddestinatio: ddestinatio,
-                dfullname: dfullname,
-                imgdest: imgdest,
+                builder: (context) => Details(
+                      imgUrl: imgdest,
+                      placeName: dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
+                      rating: 4.5,
+                      dcoordinates: dcoordinates,
+                      dcoordinatesy: dcoordinatesy,
+                      ddestinatio: ddestinatio,
+                      dfullname: dfullname,
+                      imgdest: imgdest,
+                      
+                    
+                      
+                    )
+                    )
+                    );
+      },
+        child:  Container(
+        margin: const EdgeInsets.only(left: 0,top: 10),
+        decoration: const BoxDecoration(
+
+      color: Color.fromARGB(255, 156, 158, 7), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10),topLeft:Radius.circular(5), topRight:Radius.circular(5), )),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            ClipRRect(
+              borderRadius:BorderRadius.circular(5),
+               child: CachedNetworkImage(
+                imageUrl: imgdest,
+                width: 170,
+                height: 90,
+                fit: BoxFit.cover,
+              ),
+               ),
+                       Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+
+                  const SizedBox(
+                    height: 3,
+                  ),
+                                Text(
+                    dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
+                    style: const TextStyle(
+                      
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+              
+                     Text(
+                    //dunescoreg + "sdafl",
+                    "" + dzone,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),                 
+                  const SizedBox(
+                    height: 6,
+                  ),
+ 
+                ],
               ),
             ),
-          );
-        },
-        child: Container(
-          margin: EdgeInsets.only(left: 0, top: 10),
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 123, 125, 201),
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
-            ),
-          ),
-          height: 140,
-          child: Stack(
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                ),
-                child: CachedNetworkImage(
-                  imageUrl: imgdest,
-                  height: 140,
-                  width: 210,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(0.6),
-                      Colors.black.withOpacity(0.6),
-                    ],
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          
+          ],
         ),
+      ),
+
       );
-    } else {
-      return SizedBox.shrink();
-    }
+}
+else
+{
+  return Container(alignment: null, height: 0.0, width: 0.0,);
+}           
   }
 }
+
+
+

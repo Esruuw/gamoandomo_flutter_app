@@ -1,48 +1,15 @@
 import 'dart:convert';
-// import 'dart:html';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:omogamo/data/data.dart';
 import 'package:omogamo/model/country_model.dart';
 import 'package:omogamo/model/destination_model.dart';
-import 'package:omogamo/model/service_model.dart';
-// import 'package:omogamo/views/NaturalButton.dart';
-// import 'package:omogamo/views/hhome.dart';
-// import 'package:omogamo/views/Man_Made.dart';
-// import 'package:omogamo/views/CulturalButton.dart';
-// import 'package:omogamo/views/GamoDestinations.dart';
-
-// import 'package:omogamo/model/imagedb.dart';
+import 'package:omogamo/model/new_service_model.dart'; // Change the import to your new model
 import 'package:omogamo/model/popular_tours_model.dart';
-// import 'package:omogamo/views/AllDestinations.dart';
-// import 'package:omogamo/views/CulturalButton.dart';
-// import 'package:omogamo/views/GamoDestinations.dart';
-// import 'package:omogamo/views/ManMadeButton.dart';
-// import 'package:omogamo/views/NaturalButton.dart';
-// import 'package:omogamo/views/OmoDestinations.dart';
-// import 'package:omogamo/views/ddetails.dart';
-// import 'package:omogamo/views/details.dart';
-// import 'package:omogamo/utils/colors.dart';
-import 'package:omogamo/views/menu.dart';
 import 'package:omogamo/views/detailsservice.dart';
-// import 'package:omogamo/views/loading_widget.dart';
-// import 'package:discounttour/views/menu.dart';
-// import 'package:omogamo/utils/next_screen.dart';
-import 'package:flutter_search_bar/flutter_search_bar.dart' ;
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:http/http.dart' as http;
-// import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-// import 'package:discounttour/utils/next_screen.dart';
-// class SearchBarDemoApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//         title: 'Search Bar Demo',
-//         theme: new ThemeData(primarySwatch: Colors.blue),
-//         home: new Home());
-//   }
-// }
-
-
+import 'package:omogamo/views/menu.dart';
 class SearchBarDemoApp extends StatelessWidget {
   @override
   
@@ -63,178 +30,128 @@ class HotelDetailArrow extends StatefulWidget {
   _HotelDetailArrow createState() => _HotelDetailArrow();
    _HotelDetailArrow createStatte() => new _HotelDetailArrow();
 }
-// class Task extends StatefulWidget {
-  
-//   @override
-
-//   _HomeState createState() => _HomeState();
-//    _HomeState createStatte() => new _HomeState();
-// }
 
 class _HotelDetailArrow extends State<HotelDetailArrow> {
 
   
-late SearchBar searchBar;
-  // ignore: unused_field
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+ late SearchBar searchBar;  // Declaring searchBar as late
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   AppBar buildAppBar(BuildContext context) {
-    return new AppBar(
-        title: new Text('Search Bar Demo'),
-        actions: [searchBar.getSearchAction(context)]);
+    return AppBar(
+      title: const Text('Search Bar Demo'),
+      actions: [searchBar.getSearchAction(context)],
+    );
   }
-
-  // void onSubmitted(String value) {
-  //   setState(() => _scaffoldKey.currentState
-    
-  //       .showSnackBar(new SnackBar(content: new Text('You wrote $value!'))));
-  // }
 
   List<PopularTourModel> popularTourModels = [];
   List<CountryModel> country = [];
-  List<Service> services = [];
+  List<New_Service> services = [];
   List<Destination> destination = [];
-  // List<Imagedb> myimage = [];
   bool loading = true;
-
-  Future<void> getData() async {
+Future<void> getData() async {
   try {
-    final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+    final response = await http.get(Uri.parse("https://esruuw.github.io/new_tourism_g_omo_service/ga_omo_service.json"));
 
     if (response.statusCode == 200) {
       String data = response.body;
-      print("Got the response from destination");
+      // Removed print("Response body: $data");
+
       var decodedData = jsonDecode(data);
-      print("The below is decoded Destination Data");
 
-      if (decodedData['features'].isEmpty) {
-        print("Empty");
-      } else {
-        for (var i = 0; i < decodedData['features'].length; i++) {
-          var feature = decodedData['features'][i];
-          var properties = feature['properties'];
-          var geometry = feature['geometry'];
+      if (decodedData == null) {
+        // Removed print("Error: Decoded data is null");
+        return;
+      }
 
-          Service serv = Service(
+      if (decodedData.isEmpty) {
+        // Removed print("Empty data received");
+      } else if (decodedData is List) {  // Ensure it's a List
+        // Removed print("Data is a list");
+
+        for (var i = 0; i < decodedData.length; i++) {
+          var properties = decodedData[i] ?? {};  // Safely get the properties
+          if (properties.isEmpty) {
+            continue;
+          }
+
+          // Safely access each property
+            New_Service serv = New_Service(
+            int.tryParse(properties['id'].toString()) ?? 0,
+            properties['geom'] ?? '',
+            int.tryParse(properties['objectid'].toString()) ?? 0,
+            double.tryParse(properties['x'].toString()) ?? 0.0,
+            double.tryParse(properties['y'].toString()) ?? 0.0,
+            double.tryParse(properties['z'].toString()) ?? 0.0,
+            int.tryParse(properties['code'].toString()) ?? 0,
             properties['full_name'] ?? '',
             properties['short_name'] ?? '',
             properties['zone'] ?? '',
             properties['wereda'] ?? '',
             properties['kebele'] ?? '',
-            properties['locality_n'] ?? '',
             properties['phone_line'] ?? '',
             properties['email'] ?? '',
-            properties['Service'] ?? '',
-            properties['service_ty'] ?? '',
-            properties['code'] ?? '',
-            properties['img'] ?? '',
             properties['website'] ?? '',
-            geometry['coordinates'][0] ?? 0.0,
-            geometry['coordinates'][1] ?? 0.0,
+            properties['service_ty'] ?? '',
+            properties['owner_name'] ?? '',
+            properties['moto'] ?? '',
+            properties['image1'] ?? ''
           );
+
           services.add(serv);
         }
-        print("not empty");
+      } 
+      else
+       {
       }
     } else {
-      print("Oops, we didn't get a successful response");
     }
-  } catch (e) {
-    print("An error occurred: $e");
+  }
+   catch (e) 
+   {
+    // Removed print("An error occurred: $e");
   }
 }
-  // List<Destination> destination = [];
 
-Future<void> getdestinationData() async {
-  const url = "https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json";
-  try {
-    final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      final data = response.body;
-      final List<dynamic> decodedDatatwo = jsonDecode(data);
-
-      if (decodedDatatwo.isEmpty) {
-        print("Data is empty");
-      } else {
-        for (var i = 0; i < decodedDatatwo.length; i++) {
-          final item = decodedDatatwo[i];
-
-          // Handling null values by providing default values
-          final destinationItem = Destination(
-            item['full_name'] ?? '',
-            item['short_name'] ?? '',
-            item['zone'] ?? '',
-            item['wereda'] ?? '',
-            item['kebele'] ?? '',
-            item['organizati'] ?? '',
-            item['status'] ?? '',
-            item['area_sqkm'] ?? '',
-            item['unesco_reg'] ?? '',
-            item['descriptio'] ?? '',
-            item['destinatio'] ?? '',
-            item['x']?.toDouble() ?? 0.0, // Ensure it's a double
-            item['y']?.toDouble() ?? 0.0, // Ensure it's a double
-            item['image1'] ?? '',
-          );
-
-          destination.add(destinationItem);
-        }
-        print("Data loaded successfully");
-      }
-    } else {
-      print("Failed to load data: ${response.statusCode}");
-    }
-  } catch (e) {
-    print("An error occurred: $e");
-  }
-}
 
   @override
   void initState() {
     super.initState();
-        destination = destination;
-        print(destination.length);
-    
     getData();
-    getdestinationData();
     country = getCountrys();
     popularTourModels = getPopularTours();
     loading = true;
-    print("Init state");
-    print(loading);
     hotReload();
-    }
-  Future hotReload() async {
+  }
+
+  Future<void> hotReload() async {
     Future.delayed(const Duration(seconds: 6)).then((value) {
       setState(() {
-        print("Delayed print value");
         loading = false;
-        print("hot reload");
-        print(loading);
       });
     });
   }
 
-  listOfServices(index) { 
+  listOfServices(index) {
     return CountryListTile(
-            fullname: services[index].fullname,
-            shortname: services[index].shortname,
-            img: services[index].img,
-            // myData[index]['logo_url'],
-            zone: services[index].zone,
-            code: services[index].code,
-            wereda: services[index].wereda,
-            xcoordinates: services[index].xcoordinates,
-            ycoordinates: services[index].ycoordinates,
-            phoneLine: services[index].phoneLine,
-            phoneNobile:services[index].phoneNobile,
-            website: services[index].website,
+      fullname: services[index].fullName,
+      shortname: services[index].shortName ?? '',
+      // img: 'img_url', // Use a valid image URL
+      zone: services[index].zone,
+      code: services[index].code,
+      wereda: services[index].wereda,
+      xcoordinates: services[index].x,
+      ycoordinates: services[index].y,
+      phoneLine: services[index].phoneLine ?? '',
+      phoneNobile: 'mobile_number', // Add a proper field for mobile number
+      website: services[index].website ?? '',
+      img: services[index].img,
 
-          );
+    );
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     var inkWell = InkWell(
           child: Container(
@@ -286,7 +203,6 @@ Future<void> getdestinationData() async {
           ],
         ),
 
-        
         actions: [
           inkWell,
         ],
@@ -311,9 +227,9 @@ Future<void> getdestinationData() async {
           searchText = searchText.toLowerCase();
           setState(() {
             services = services.where((u) {
-              var fName = u.fullname.toLowerCase();
-              var lName = u.fullname.toLowerCase();
-              var job = u.fullname.toLowerCase();
+              var fName = u.fullName.toLowerCase();
+              var lName = u.fullName.toLowerCase();
+              var job = u.fullName.toLowerCase();
               return fName.contains(searchText) || lName.contains(searchText) || job.contains(searchText);
             }).toList();
           });
@@ -341,35 +257,10 @@ Future<void> getdestinationData() async {
               const Divider(
 color: Colors.blue, 
 ),
-                  const Row(
 
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-         
-   
- Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: [
-    SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        
-        children: [
-          
-        ],
-      ),
-    ),
-  ],
-) 
-   ],
-   ),
-                                                                                   
-
-                       
+ 
                        const Row(children: [
 
-                        
                           Text(
                                  "Hotel and Restaurant",
                                  style: TextStyle(
@@ -381,46 +272,21 @@ color: Colors.blue,
                      ],),
                          
     loading == true ? Center(child: CircularProgressIndicator()) :
-     SingleChildScrollView(
+                                                  SingleChildScrollView(
                                                     child:Container(
                                                   // height: 1000,
                                                    width: double.infinity,
                                                    child: ListView.builder(
-                                                       itemCount: services.length,
-                                                       shrinkWrap: true,
-                                                        physics: ClampingScrollPhysics(),
-                                                       scrollDirection: Axis.vertical,
-                                                       itemBuilder: (BuildContext context, int index) {
-                                                         return  listOfServices(index);
+                                                   itemCount: services.length,
+                                                   shrinkWrap: true,
+                                                   physics: ClampingScrollPhysics(),
+                                                   scrollDirection: Axis.vertical,
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                    return  listOfServices(index);
                                                        }),
                                                  ),
                                                 ),
 
-                   
-                            const SizedBox(
-                             height: 28,
-                              ),
-                                         
-                   const Row(children: [
-              
-                    ],),         
-                           
-           
-                    SizedBox(height: 15),
-           
-                     const SizedBox(height: 15),
-             
-                     SizedBox(height: 15),
-                     const Row(children: [
-                 
-                    ],),
-          
-                     SizedBox(height: 15),
-                   
-                   
-                           const SizedBox(height: 20),
-                   
-                   
                               ],
                              )
                                                                   
@@ -430,8 +296,7 @@ color: Colors.blue,
                             );  
                                                        
                                                         }
-                                                      }
-  
+}
 class CountryListTile extends StatelessWidget {
   final String fullname;
   final double xcoordinates;
@@ -444,49 +309,48 @@ class CountryListTile extends StatelessWidget {
   final int code;
   final String wereda;
   final String website;
- 
-  CountryListTile({
-      required this.fullname,
-      required this.xcoordinates,
-      required this.ycoordinates,
-      required this.shortname,
-      required this.img,
-      required this.zone,
-      required this.phoneLine,
-      required this.phoneNobile,
-      required this.code,
-      required this.wereda,
-      required this.website,
 
-      });
-@override
+  CountryListTile({
+    required this.fullname,
+    required this.xcoordinates,
+    required this.ycoordinates,
+    required this.shortname,
+    required this.img,
+    required this.zone,
+    required this.phoneLine,
+    required this.phoneNobile,
+    required this.code,
+    required this.wereda,
+    required this.website,
+
+  });
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      //ontap hotel and restaurant
-onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => Detailsservice(
-        imgUrl: img,
-        placeName: fullname.length > 15 ? fullname.substring(0, 15) + '...' : fullname,
-        rating: 4.5,
-        fullname: fullname,
-        zone: zone,
-        code: code,
-        phoneLine: phoneLine,
-        phoneNobile: phoneNobile,
-        website: website,
-        xcoordinates: xcoordinates, // Ensure this is passed correctly
-        ycoordinates: ycoordinates, // Ensure this is passed correctly
-        wereda: wereda,
-        img: img,
-      ),
-    ),
-  );
-},
-  
-      child:Container(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Detailsservice(
+              imgUrl: img,
+              placeName: fullname.length > 15 ? fullname.substring(0, 15) + '...' : fullname,
+              rating: 4.5,
+              fullname: fullname,
+              zone: zone,
+              code: code,
+              phoneLine: phoneLine,
+              phoneNobile: phoneNobile,
+              website: website,
+              xcoordinates: xcoordinates,
+              ycoordinates: ycoordinates,
+              wereda: wereda,
+              img: img,
+            ),
+          ),
+        );
+      },
+     child:Container(
 
         margin: const EdgeInsets.only(left: 0,top: 10),
         decoration: const BoxDecoration(
@@ -544,112 +408,6 @@ onTap: () {
           ],
         ),
       ),
-     
     );
   }
-
 }
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: CachedNetworkImage(
-              imageUrl: "https://pix10.agoda.net/hotelImages/5502207/0/9118b486f9ffd30d0a49b1860822fdfc.jpg",
-              height: 220,
-              width: 150,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Container(
-            height: 200,
-            width: 150,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.only(left: 8, top: 8),
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white38),
-                        child: const Text(
-                           "New",
-                          style: TextStyle(color: Colors.white),
-                         ) ),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 10, left: 8, right: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: const Text(
-                              "Thailand",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          const Text(
-                            "Keble:Lante Achole",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12),
-                          )
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    Container(
-                        margin: const EdgeInsets.only(bottom: 10, right: 8),
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 3, vertical: 7),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            color: Colors.white38),
-                        child: const Column(
-                          children: [
-                            Text(
-                              "46",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 13),
-                            ),
-                            SizedBox(
-                              height: 2,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.white,
-                              size: 20,
-                            )
-                          ],
-                        ))
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-      
-    );
-  
-  }
- 

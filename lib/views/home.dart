@@ -4,7 +4,7 @@ import 'package:omogamo/data/data.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:omogamo/model/country_model.dart';
 import 'package:omogamo/model/destination_model.dart';
-import 'package:omogamo/model/service_model.dart';
+import 'package:omogamo/views/CulturalButton.dart';
 import 'package:omogamo/views/CulturalButtonNew.dart';
 import 'package:omogamo/views/ManmadeButtonNew.dart';
 import 'package:omogamo/views/NaturalButton.dart';
@@ -20,6 +20,8 @@ import 'package:omogamo/views/detailsservice.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart' ;
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:http/http.dart' as http;
+import 'package:omogamo/model/new_service_model.dart';
+
 class SearchBarDemoApp extends StatelessWidget {
   const SearchBarDemoApp({super.key});
   @override
@@ -57,103 +59,110 @@ AppBar buildAppBar(BuildContext context)
 
   List<PopularTourModel> popularTourModels = [];
   List<CountryModel> country = [];
-  List<Service> services = [];
+  List<New_Service> services = [];
   List<Destination> destination = [];
   // List<Imagedb> myimage = [];
   bool loading = true;
 
 Future<void> getData() async {
   try {
-    final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
+    final response = await http.get(Uri.parse("https://esruuw.github.io/new_tourism_g_omo_service/ga_omo_service.json"));
 
     if (response.statusCode == 200) {
       String data = response.body;
-      print("Got the response from destination");
+      // Removed print("Response body: $data");
+
       var decodedData = jsonDecode(data);
-      print("The below is decoded Destination Data");
 
-      if (decodedData['features'].isEmpty) {
-        print("Empty");
-      } else {
-        for (var i = 0; i < decodedData['features'].length; i++) {
-          var feature = decodedData['features'][i];
-          var properties = feature['properties'];
-          var geometry = feature['geometry'];
+      if (decodedData == null) {
+        // Removed print("Error: Decoded data is null");
+        return;
+      }
 
-          Service serv = Service(
+      if (decodedData.isEmpty) {
+        // Removed print("Empty data received");
+      } else if (decodedData is List) {  // Ensure it's a List
+        // Removed print("Data is a list");
+
+        for (var i = 0; i < decodedData.length; i++) {
+          var properties = decodedData[i] ?? {};  // Safely get the properties
+          if (properties.isEmpty) {
+            continue;
+          }
+
+          // Safely access each property
+            New_Service serv = New_Service(
+            int.tryParse(properties['id'].toString()) ?? 0,
+            properties['geom'] ?? '',
+            int.tryParse(properties['objectid'].toString()) ?? 0,
+            double.tryParse(properties['x'].toString()) ?? 0.0,
+            double.tryParse(properties['y'].toString()) ?? 0.0,
+            double.tryParse(properties['z'].toString()) ?? 0.0,
+            int.tryParse(properties['code'].toString()) ?? 0,
             properties['full_name'] ?? '',
             properties['short_name'] ?? '',
             properties['zone'] ?? '',
             properties['wereda'] ?? '',
             properties['kebele'] ?? '',
-            properties['locality_n'] ?? '',
             properties['phone_line'] ?? '',
             properties['email'] ?? '',
-            properties['Service'] ?? '',
-            properties['service_ty'] ?? '',
-            properties['code'] ?? '',
-            properties['img'] ?? '',
             properties['website'] ?? '',
-            geometry['coordinates'][0] ?? 0.0,
-            geometry['coordinates'][1] ?? 0.0,
+            properties['service_ty'] ?? '',
+            properties['owner_name'] ?? '',
+            properties['moto'] ?? '',
+            properties['image1'] ?? ''
           );
+
           services.add(serv);
         }
-        print("not empty");
+      } 
+      else
+       {
       }
     } else {
-      print("Oops, we didn't get a successful response");
     }
-  } catch (e) {
-    print("An error occurred: $e");
+  }
+   catch (e) 
+   {
+    // Removed print("An error occurred: $e");
   }
 }
-  // List<Destination> destination = [];
 
-Future<void> getdestinationData() async {
-  const url = "https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json";
-  try {
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final data = response.body;
-      final List<dynamic> decodedDatatwo = jsonDecode(data);
-
-      if (decodedDatatwo.isEmpty) {
-        print("Data is empty");
-      } else {
-        for (var i = 0; i < decodedDatatwo.length; i++) {
-          final item = decodedDatatwo[i];
-
-          // Handling null values by providing default values
-          final destinationItem = Destination(
-            item['full_name'] ?? '',
-            item['short_name'] ?? '',
-            item['zone'] ?? '',
-            item['wereda'] ?? '',
-            item['kebele'] ?? '',
-            item['organizati'] ?? '',
-            item['status'] ?? '',
-            item['area_sqkm'] ?? '',
-            item['unesco_reg'] ?? '',
-            item['descriptio'] ?? '',
-            item['destinatio'] ?? '',
-            item['x']?.toDouble() ?? 0.0, // Ensure it's a double
-            item['y']?.toDouble() ?? 0.0, // Ensure it's a double
-            item['image1'] ?? '',
-          );
-
-          destination.add(destinationItem);
+  Future<void> getdestinationData() async {
+    try {
+      final response = await http.get(Uri.parse("https://esruuw.github.io/tourism_destination/destination.json"));
+      if (response.statusCode == 200) {
+        String data = response.body;
+        var decodedDatatwo = jsonDecode(data);
+        
+        if (decodedDatatwo != null && decodedDatatwo.isNotEmpty) {
+          for (var item in decodedDatatwo) {
+            Destination destiny = Destination(
+              item['full_name'] ?? '',
+              item['short_name'] ?? '',
+              item['zone'] ?? '',
+              item['wereda'] ?? '',
+              item['kebele'] ?? '',
+              item['organizati'] ?? '',
+              item['status'] ?? '',
+              item['area_sqkm'] ?? '',
+              item['unesco_reg'] ?? '',
+              item['descriptio'] ?? '',
+              item['destinatio'] ?? '',
+              item['x'] ?? 0.0,
+              item['y'] ?? 0.0,
+              item['image1'] ?? '',
+            );
+            destination.add(destiny);
+          }
         }
-        print("Data loaded successfully");
+      } else {
+        print("Failed to get a successful response");
       }
-    } else {
-      print("Failed to load data: ${response.statusCode}");
+    } catch (e) {
+      print("Error occurred: $e");
     }
-  } catch (e) {
-    print("An error occurred: $e");
   }
-}
 
 // Future getimagedata() async {
 //     http.Response response = await http.get("https://raw.githubusercontent.com/ermyas04/newimage/main/image.json");
@@ -228,25 +237,23 @@ Future<void> getdestinationData() async {
       });
     });
   }
-
-  listOfServices(index) { 
+ listOfServices(index) {
     return CountryListTile(
-            fullname: services[index].fullname,
-            shortname: services[index].shortname,
-            img: services[index].img,
-            // myData[index]['logo_url'],
-            zone: services[index].zone,
-            code: services[index].code,
-            wereda: services[index].wereda,
-            xcoordinates: services[index].xcoordinates,
-            ycoordinates: services[index].ycoordinates,
-            phoneLine: services[index].phoneLine,
-            phoneNobile:services[index].phoneNobile,
-            website: services[index].website,
+      fullname: services[index].fullName,
+      shortname: services[index].shortName ?? '',
+      // img: 'img_url', // Use a valid image URL
+      zone: services[index].zone,
+      code: services[index].code,
+      wereda: services[index].wereda,
+      xcoordinates: services[index].x,
+      ycoordinates: services[index].y,
+      phoneLine: services[index].phoneLine ?? '',
+      phoneNobile: 'mobile_number', // Add a proper field for mobile number
+      website: services[index].website ?? '',
+      img: services[index].img,
 
-          );
+    );
   }
-  
 listOfGamodestination(index) { 
     return GamoDestination(
             dfullname: destination[index].dfullname,
@@ -300,24 +307,7 @@ listOfGamodestination(index) {
           
           // onTap: () => Home(),
           );
-        // Container(
-        //   child: ListView.builder(
-        //     itemBuilder: (context, index) {
-        //       if (!loading) {
-        //         return index == 0 ? TextField() : (this.destination[index - 1]);
-        //       } else {
-        //         return LoadingView();
-        //       }
-        //     },
-        //     //  itemCount: services?.length,
-        //      itemCount: destination.length,
-        //     // itemCount: destination.length,
-        //     //?? true
-        //   //  itemCount: destination?.length ?? 0
-        //     //  itemCount: destination?.length ??  0
-           
-        //   ),
-        // );
+      
     return Scaffold(
       appBar: AppBar(
         leading: Container(
@@ -339,13 +329,7 @@ listOfGamodestination(index) {
               "assets/images/logo.png",
               height: 25,
             ),
-            
-            // Text(
-            //   "Tourist-Map",
-            //   style:
-            //       TextStyle(color: tr2, fontWeight: FontWeight.w600),
-                  
-            // )
+         
           ],
         ),
 
@@ -367,19 +351,7 @@ listOfGamodestination(index) {
             children: [
               InkWell(
                   child: Container(
-                    // alignment: Alignment.center,
-                    // margin: EdgeInsets.only(left: 15, right: 5),
-                    // padding: EdgeInsets.only(left: 15, right: 15),
-                    // height: 40,
-                    // // widthFactor: 0.8,
-                    // // width: 280,
-                    // width: 150,
-                    // decoration: BoxDecoration(
-                    //   color: Colors.grey[100],
-                    //   border: Border.all(color: Colors.grey[300], width: 0.5),
-                    //   borderRadius: BorderRadius.circular(8),
-                    // ),
-                    
+             
       child: TextField(
         autofocus: false,
         onChanged: (searchText) {
@@ -417,12 +389,7 @@ listOfGamodestination(index) {
 
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                 
-                  // Link(
-                  //   icon: Icon(Icons.clear_all_rounded, color: Color(0xff1A4160), 
-                  //   ),
-                  //   label: "",
-                  // ),
+       
 
 //The following buttons are created for horizontal scrollable icons
 Natural_Button(
@@ -446,17 +413,6 @@ Cultural_Button(
   longitude: 56.78, // Example longitude value
 ),
 
-                  //   Omo_Destiny(
-                  //  icon: Icon(Icons.photo, color: Color(0xff1A4160),),
-                  //  label: "Cultural",
-                                     
-                  //    ),
-                    //   BirdFly(
-                    //  icon: Icon(Icons.photo, color: Color(0xff1A4160),),
-                    //   label: "Cultural",
-                                     
-                    // ),
-                   
  const Row(
   mainAxisAlignment: MainAxisAlignment.start,
 
@@ -497,9 +453,8 @@ Cultural_Button(
     ),
   ],
 ) 
-                  ],
-                                                                      
-                                                                    ),
+         ],
+         ),
                                                                                    
                        //  SizedBox(
                        // height: 4,
@@ -780,11 +735,7 @@ Cultural_Button(
                                                           
                                                         }
                                                       }
-                   
-
-                
-       
-     //Class for natural icon              
+     
 class Natural_Button extends StatelessWidget {
   final Icon icon;
   final String label;
@@ -865,7 +816,7 @@ class Natural_Button extends StatelessWidget {
         onTap
         : () {
                     Navigator.push(context,
-                    MaterialPageRoute(builder: (context) =>ManmadeButtonNew()
+                    MaterialPageRoute(builder: (context) =>ManMadeButton()
                   ));
                 },
                 
@@ -926,7 +877,7 @@ class Natural_Button extends StatelessWidget {
         onTap
         : () {
                     Navigator.push(context,
-                    MaterialPageRoute(builder: (context) =>CulturalButtonNew()
+                    MaterialPageRoute(builder: (context) =>CulturalButton()
                   ));
                 },
                 
@@ -1388,14 +1339,8 @@ class PopularTours extends StatelessWidget {
 
 //These gamoDestination is created for ManMade Horizontal Scrollable which contains forward arrow at the top of itself
 class GamoDestination extends StatelessWidget {
-  // final String imgUrl;
-  // final String title;
-  // final String desc;
-  // final String price;
-  // final double rating;
-  final String dfullname;
+ final String dfullname;
   final String dshortname;
- // final String destimated;
   final String ddestinatio;
   final String dunescoreg;
   final double dcoordinates;
@@ -1405,14 +1350,9 @@ class GamoDestination extends StatelessWidget {
   final String imgdest;
   GamoDestination(
       {
-      //   @required this.imgUrl,
-      // @required this.rating,
-      // @required this.desc,
-      // @required this.price,
-      // @required this.title,
+   
   required this.dfullname,
   required this.dshortname,
-  //   @required this.destimated,
   required this.ddestinatio,
   required this.dunescoreg,
   required this.destinationnnn,
@@ -1420,7 +1360,6 @@ class GamoDestination extends StatelessWidget {
   required this.dcoordinatesy,
   required this.dzone,
   required this.imgdest,
-
       
       });
   @override
@@ -1430,11 +1369,8 @@ class GamoDestination extends StatelessWidget {
 {
     return GestureDetector
 (
-    
-
-      onTap: () {
-
-        Navigator.push(
+    onTap: () {
+     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Details(
@@ -1456,13 +1392,13 @@ class GamoDestination extends StatelessWidget {
         //height: 250,
         margin: const EdgeInsets.only(left: 5),
         decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(0)),
+            color: Colors.black12, borderRadius: BorderRadius.circular(0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
                borderRadius:BorderRadius.circular(20),
-               child: CachedNetworkImage(
+              child: CachedNetworkImage(
                 imageUrl: imgdest,
                 width: 150,
                 height: 200,
@@ -1474,6 +1410,7 @@ class GamoDestination extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                 // maqaa isa duree
                   Text(
                     dfullname.length > 15 ? dfullname.substring(0, 15) + '...' : dfullname,
                     style: const TextStyle(
@@ -1495,14 +1432,7 @@ class GamoDestination extends StatelessWidget {
                   const SizedBox(
                     height: 6,
                   ),
-                  // Text(
-                  //   //dunescoreg + "sdafl",
-                  //   "" + destinationnnn,
-                  //   style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.w600,
-                  //       color: Colors.black),
-                  // )
+             
                 ],
               ),
             ),
@@ -1516,9 +1446,9 @@ class GamoDestination extends StatelessWidget {
 }
 else
 {
-  return Container(width: 0.0, height: 0.0);
+  return Container(height: 0.0, width: 0.0,);
 }
-  }  
+  }   
 }
 
 //These Class is created for OmoDestination Horizontal Scrollable which contains forward arrow at the top of itself
@@ -1629,15 +1559,7 @@ class OmoDestination extends StatelessWidget {
                   const SizedBox(
                     height: 6,
                   ),
-                  //part type attraction site qabatee kan jiru 
-                  // Text(
-                  //   //dunescoreg + "sdafl",
-                  //   "" + destinationnnn,
-                  //   style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.w600,
-                  //       color: Colors.black),
-                  // )
+             
                 ],
               ),
             ),
@@ -1941,3 +1863,13 @@ void checkNetworkConnectivity(BuildContext context) async {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+

@@ -15,11 +15,6 @@ class Destination {
   double dcoordinatesy;
   String imgdest;
   
-  
-  
-  
- 
-
   Destination(
     this.dfullname,
     this.dshortname,

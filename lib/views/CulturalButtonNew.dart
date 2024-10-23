@@ -1,15 +1,10 @@
-// ignore_for_file: unused_import
 
 import 'dart:convert';
-// import 'dart:html';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:omogamo/data/data.dart';
 import 'package:omogamo/model/country_model.dart';
 import 'package:omogamo/model/destination_newModel.dart';
 import 'package:omogamo/model/service_model.dart';
-// import 'package:omogamo/views/home.dart';
-// import 'package:omogamo/views/hhome.dart';
-
 import 'package:omogamo/model/imagedb.dart';
 import 'package:omogamo/model/popular_tours_model.dart';
 import 'package:omogamo/views/details.dart';
@@ -22,18 +17,6 @@ import 'package:omogamo/utils/next_screen.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart' ;
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:http/http.dart' as http;
-// import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-// import 'package:discounttour/utils/next_screen.dart';
-// class SearchBarDemoApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//         title: 'Search Bar Demo',
-//         theme: new ThemeData(primarySwatch: Colors.blue),
-//         home: new Home());
-//   }
-// }
-
 
 class SearchBarDemoApp extends StatelessWidget {
   @override
@@ -56,7 +39,8 @@ class CulturalButtonNew extends StatefulWidget {
    _CulturalButtonNew createStatte() => new _CulturalButtonNew();
 }
 
-class _CulturalButtonNew extends State<CulturalButtonNew> {
+class _CulturalButtonNew extends State<CulturalButtonNew>
+ {
   bool isItemAvailable = true;
   late SearchBar searchBar;
 
@@ -67,43 +51,6 @@ class _CulturalButtonNew extends State<CulturalButtonNew> {
   List<Destination> originalDestination = [];
 
   bool loading = true;
-
-  // Future<void> getData() async {
-  //   try {
-  //     final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
-  //     if (response.statusCode == 200) {
-  //       String data = response.body;
-  //       var decodedData = jsonDecode(data);
-        
-  //       if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
-  //         for (var feature in decodedData['features']) {
-  //           Service serv = Service(
-  //             feature['properties']['full_name'] ?? '',
-  //             feature['properties']['short_name'] ?? '',
-  //             feature['properties']['zone'] ?? '',
-  //             feature['properties']['wereda'] ?? '',
-  //             feature['properties']['kebele'] ?? '',
-  //             feature['properties']['locality_n'] ?? '',
-  //             feature['properties']['phone_line'] ?? '',
-  //             feature['properties']['email'] ?? '',
-  //             feature['properties']['Service'] ?? '',
-  //             feature['properties']['service_ty'] ?? '',
-  //             feature['properties']['code'] ?? '',
-  //             feature['properties']['img'] ?? '',
-  //             feature['properties']['website'] ?? '',
-  //             feature['geometry']['coordinates']?[0] ?? 0.0,
-  //             feature['geometry']['coordinates']?[1] ?? 0.0,
-  //           );
-  //           services.add(serv);
-  //         }
-  //       }
-  //     } else {
-  //       print("Failed to get a successful response");
-  //     }
-  //   } catch (e) {
-  //     print("Error occurred: $e");
-  //   }
-  // }
 
   Future<void> getdestinationData() async {
     try {
@@ -289,14 +236,9 @@ class _CulturalButtonNew extends State<CulturalButtonNew> {
 }
                 
 class PopularTours extends StatelessWidget {
-  // final String imgUrl;
-  // final String title;
-  // final String desc;
-  // final String price;
-  // final double rating;
+  
   final String dfullname;
   final String dshortname;
- // final String destimated;
   final String ddestinatio;
   final String dunescoreg;
   final double dcoordinates;
@@ -306,15 +248,9 @@ class PopularTours extends StatelessWidget {
   final String imgdest;
   PopularTours(
       {
-      //   @required this.imgUrl,
-      // @required this.rating,
-      // @required this.desc,
-      // @required this.price,
-      // @required this.title,
-
+  
   required this.dfullname,
   required this.dshortname,
-  //   @required this.destimated,
   required this.ddestinatio,
   required this.dunescoreg,
   required this.destinationnnn,
@@ -393,16 +329,7 @@ if(dzone == "Gamo")
                   const SizedBox(
                     height: 6,
                   ),
-                  //   Text(
-                  //   //dunescoreg + "sdafl",
-                  //   "" + destinationnnn,
-                  //   style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.w300,
-                  //       color: Colors.white),
-                  // ),
-
-
+              
                      Text(
                     //dunescoreg + "sdafl",
                     "" + dzone,
@@ -415,14 +342,6 @@ if(dzone == "Gamo")
                     height: 6,
                   ),
  
-                  //Text(
-                    //dunescoreg + "sdafl",
-                  //   "Zone: " + dzone,
-                  //   style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.w300,
-                  //       color: Colors.white),
-                  // )
                 ],
               ),
             ),

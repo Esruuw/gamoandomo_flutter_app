@@ -64,49 +64,11 @@ class _ManMadeButton extends State<ManMadeButton> {
   List<Service> services = [];
   List<Destination> destination = [];
   List<Destination> originalDestination = [];
-
   bool loading = true;
-
-  Future<void> getData() async {
-    try {
-      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/servicegithub.json/main/s.json"));
-      if (response.statusCode == 200) {
-        String data = response.body;
-        var decodedData = jsonDecode(data);
-        
-        if (decodedData['features'] != null && decodedData['features'].isNotEmpty) {
-          for (var feature in decodedData['features']) {
-            Service serv = Service(
-              feature['properties']['full_name'] ?? '',
-              feature['properties']['short_name'] ?? '',
-              feature['properties']['zone'] ?? '',
-              feature['properties']['wereda'] ?? '',
-              feature['properties']['kebele'] ?? '',
-              feature['properties']['locality_n'] ?? '',
-              feature['properties']['phone_line'] ?? '',
-              feature['properties']['email'] ?? '',
-              feature['properties']['Service'] ?? '',
-              feature['properties']['service_ty'] ?? '',
-              feature['properties']['code'] ?? '',
-              feature['properties']['img'] ?? '',
-              feature['properties']['website'] ?? '',
-              feature['geometry']['coordinates']?[0] ?? 0.0,
-              feature['geometry']['coordinates']?[1] ?? 0.0,
-            );
-            services.add(serv);
-          }
-        }
-      } else {
-        print("Failed to get a successful response");
-      }
-    } catch (e) {
-      print("Error occurred: $e");
-    }
-  }
 
   Future<void> getdestinationData() async {
     try {
-      final response = await http.get(Uri.parse("https://raw.githubusercontent.com/davekassaw/datafinal/main/finaldata.json"));
+      final response = await http.get(Uri.parse("https://esruuw.github.io/tourism_destination/destination.json"));
       if (response.statusCode == 200) {
         String data = response.body;
         var decodedDatatwo = jsonDecode(data);
@@ -143,7 +105,7 @@ class _ManMadeButton extends State<ManMadeButton> {
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
     getdestinationData().then((_) {
       originalDestination.addAll(destination);
       country = getCountrys();
@@ -288,14 +250,9 @@ class _ManMadeButton extends State<ManMadeButton> {
 }
                 
 class PopularTours extends StatelessWidget {
-  // final String imgUrl;
-  // final String title;
-  // final String desc;
-  // final String price;
-  // final double rating;
+  
   final String dfullname;
   final String dshortname;
- // final String destimated;
   final String ddestinatio;
   final String dunescoreg;
   final double dcoordinates;
@@ -303,13 +260,11 @@ class PopularTours extends StatelessWidget {
   final String destinationnnn;
   final String dzone;
   final String imgdest;
-  const PopularTours(
+  PopularTours(
       {
-
-
+  
   required this.dfullname,
   required this.dshortname,
-  //   @required this.destimated,
   required this.ddestinatio,
   required this.dunescoreg,
   required this.destinationnnn,
@@ -321,11 +276,11 @@ class PopularTours extends StatelessWidget {
       });
 
   @override
-  Widget build(BuildContext context) 
-  {
-    if(dzone == "Gamo")
-    {
- return GestureDetector(
+  Widget build(BuildContext context) {
+                  
+if(dzone == "Gamo")
+{
+    return GestureDetector(
 
       onTap: () {
 
@@ -348,14 +303,11 @@ class PopularTours extends StatelessWidget {
                     )
                     );
       },
-   
-
         child:  Container(
-           //height: 300,
         margin: const EdgeInsets.only(left: 0,top: 10),
         decoration: const BoxDecoration(
 
-      color: Color.fromARGB(255, 167, 11, 133), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10),topLeft:Radius.circular(5), topRight:Radius.circular(5), )),
+      color: Color.fromARGB(255, 179, 4, 112), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10),topLeft:Radius.circular(5), topRight:Radius.circular(5), )),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -388,25 +340,22 @@ class PopularTours extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
-        
-
-                       Text(
+              
+                     Text(
                     //dunescoreg + "sdafl",
                     "" + dzone,
                     style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
-                  ),
-                 
-                  SizedBox(
+                  ),                 
+                  const SizedBox(
                     height: 6,
                   ),
  
-   
                 ],
               ),
             ),
@@ -416,16 +365,13 @@ class PopularTours extends StatelessWidget {
       ),
 
       );
-    }
-    else
-    {
-
-    return Container(
-     width: 0.0,
-     height: 0.0,
-     );
-    } 
-            
+}
+else
+{
+  return Container(alignment: null, height: 0.0, width: 0.0,);
+}           
   }
 }
+
+
 
